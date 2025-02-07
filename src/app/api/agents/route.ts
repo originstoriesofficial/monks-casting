@@ -42,14 +42,14 @@ async function fetchFlorenceVisionAttributes(imageUrl: string): Promise<string> 
   const result = await fal.subscribe("fal-ai/florence-2-large/detailed-caption", {
     input: {
       image_url: imageUrl, // ✅ Now using the uploaded image URL
-      prompt: `
-        Describe the character in the image in detail. Include:
-        - The type of character (human, animal, mythical creature).
-        - What they are wearing (clothing style, cape color, armor).
-        - What they are holding (sword, staff, book, magical item).
-        - Their emotional state (happy, sad, serious, determined).
-        - Their physical stance (standing, sitting, flying).
-      `,
+      // prompt: `
+      //   Describe the character in the image in detail. Include:
+      //   - The type of character (human, animal, mythical creature).
+      //   - What they are wearing (clothing style, cape color, armor).
+      //   - What they are holding (sword, staff, book, magical item).
+      //   - Their emotional state (happy, sad, serious, determined).
+      //   - Their physical stance (standing, sitting, flying).
+      // `,
     },
     logs: true,
   });
