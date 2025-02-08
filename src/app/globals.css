@@ -2,20 +2,137 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 152 100% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 27% 9%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 220 27% 9%;
+    --accent: 152 100% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 27% 9%;
+    --input: 220 27% 9%;
+    --ring: 152 100% 45%;
+    --radius: 0.75rem;
+  }
+  .dark {
+    --background: 28 74% 5%;
+    --foreground: 38 42% 78%;
+
+    --card: 30 50% 12%; /* Darker but slightly warmer */
+    --card-foreground: 12 50% 30%;
+
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 38 42% 78%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 38 42% 8%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 24 70% 20%;
+    --input: 24 70% 20%;
+    --ring: 212.7 26.8% 83.9%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-secondary;
+  }
+}
+
+@layer components {
+  .notebook-card {
+    @apply bg-card rounded-lg border border-gray-200 shadow-sm;
+  }
+
+  .notebook-header {
+    @apply text-2xl font-semibold text-secondary pb-2 mb-4;
+  }
+
+  .prediction-card {
+    @apply bg-card p-6 mb-4 hover:shadow-lg transition-shadow rounded-lg border border-gray-100;
+  }
+}
+
+/* Custom Styles */
+.gradient-text {
+  background: linear-gradient(90deg, #00e599 0%, #0d1321 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.quest_card {
+  display: -webkit-box; 
+  display: -ms-flexbox; 
+  display: flex;
+  margin-left: -30px; 
+  width: auto;
+}
+.quest_card_column {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+}
+
+
+.quest_card_column > div {
+
+  background: grey;
+  margin-bottom: 30px;
+}
+
+.p-shadow {
+  box-shadow: 
+    2px 2px 8px rgba(222, 204, 175, 0.6), /* Soft DECCAF glow */
+    4px 4px 12px rgba(200, 200, 200, 0.3), /* Subtle grey shadow */
+    6px 6px 16px rgba(0, 0, 0, 0.2); /* Faint dark shadow */
+}
+
+
+
+
+html::-webkit-scrollbar {
+  width: 3px;
+  background: gray;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar {
+  width: 3px;
+  background: gray;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 5px;
 }
