@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, ChangeEvent } from 'react';
 import { Upload, Camera, Loader } from 'lucide-react';
 import Image from 'next/image';
@@ -56,6 +55,7 @@ export default function CastingAI() {
         body: formData,
       });
       const data = await response.json();
+      console.log(data, 'breakdown')
       setBreakdown(data.breakdown);
     } catch (error) {
       console.error('Error generating breakdown:', error);
@@ -78,8 +78,11 @@ export default function CastingAI() {
           <div className="w-full max-w-xl border border-primary  bg-background backdrop-blur-sm rounded-xl shadow-xl  overflow-hidden">
             <div className="p-8 space-y-6">
               {photo ? (
-                <div className="relative group">
+                <div className="relative group" style={{ width: '600px', height: '400px', position: 'relative' }}>
                   <Image
+                    // fill={true}
+                    // layout="fill"
+                    fill
                     src={URL.createObjectURL(photo)}
                     alt="Character Preview"
                     className="w-full h-64 object-cover rounded-lg border-2 border-yellow-500/50"

@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fetch from 'node-fetch';
+import { fal } from '@fal-ai/client';
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const photo = formData.get('photo') as File;
+  console.log(photo, 'get photo link')
   const characterName = formData.get('characterName') as string;
   const hasName = formData.get('hasName') as string;
 
@@ -13,6 +15,7 @@ export async function POST(req: NextRequest) {
 
   // Simulate Vision Model Attributes
   const visionAttributes = await fakeVisionModel(photo);
+  console.log(visionAttributes, 'visionAttributes')
 
   // Generate Character Breakdown using GPT or any LLM
   const breakdown = await generateCharacterBreakdown({
@@ -26,7 +29,13 @@ export async function POST(req: NextRequest) {
 
 // Simulated Vision Model Function
 async function fakeVisionModel(photo: File): Promise<string> {
-  return 'Tall, confident, sharp-eyed individual with a commanding presence.';
+  console.log(photo.type, 'from vision model')
+  const file = new File(["MonksCreativeUpscaler"], photo.name, { type: photo.type });
+const url = await fal.storage.upload(file);
+
+  const vision = 'Tall, confident, sharp-eyed individual with a commanding presence.'
+
+  return vision;
 }
 
 // Simulated GPT-4/LLM Function
