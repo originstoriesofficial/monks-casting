@@ -67,7 +67,7 @@ async function generateCharacterBreakdown({
   characterName: string;
   hasName: string;
 }): Promise<string> {
-  const nameSection = hasName === 'yes' ? `Name: ${characterName}` : 'Name: Not provided';
+  const nameSection = hasName === 'yes' ? `Name: ${characterName}` : 'Name: fal-ai/creative-upscaler';
   return `
 Character Breakdown
 ===================

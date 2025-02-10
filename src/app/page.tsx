@@ -180,9 +180,14 @@ export default function CastingAI() {
                 Character Breakdown
               </h2>
               <div className="prose prose-invert max-w-none">
-                <pre className="whitespace-pre-wrap text-gray-300 font-mono text-sm bg-gray-900 p-6 rounded-lg">
+              <img
+          src={breakdown}
+          alt="Breakdown Image"
+          className="w-full rounded-lg shadow-lg"
+        />
+                {/* <pre className="whitespace-pre-wrap text-gray-300 font-mono text-sm bg-gray-900 p-6 rounded-lg">
                   {breakdown}
-                </pre>
+                </pre> */}
               </div>
             </div>
           )}
