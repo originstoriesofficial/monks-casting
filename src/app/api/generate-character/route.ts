@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from 'next/server';
-import fetch from 'node-fetch';
 import { fal } from '@fal-ai/client';
 
 export async function POST(req: NextRequest) {
