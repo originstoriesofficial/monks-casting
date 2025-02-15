@@ -80,7 +80,7 @@ export default function CastingAI() {
       const gatewayUrl = convertIPFSToGatewayUrl(imageUrl);
 
       // Fetch the image file from the IPFS gateway
-      const imageResponse = await fetch(gatewayUrl);
+      const imageResponse = await fetch(gatewayUrl, { mode: 'no-cors' });
       if (!imageResponse.ok) {
         throw new Error('Failed to fetch image from IPFS gateway');
       }
