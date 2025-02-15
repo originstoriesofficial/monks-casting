@@ -50,7 +50,7 @@ async function saveCharacterToDB(
   blockchainAttributes: Record<string, any>,
   characterBreakdown: string
 ) {
-  const mongoUri = process.env.MONGO_URI;
+  const mongoUri = process.env.MONGODB_URI;
   if (!mongoUri) {
     throw new Error("MONGO_URI is not set in environment variables.");
   }
