@@ -1,12 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fal } from "@fal-ai/client";
-import { MongoClient } from "mongodb";
+import { Db, MongoClient } from "mongodb";
+
+
+// Initialize MongoDB Client outside the handler to avoid reconnecting on every request
+
+
+let db: Db;
+
+const connectToDB = async () => {
+  if (!db) {
+    try {
+      const mongoUri = process.env.MONGO_URI;
+      if (!mongoUri) {
+        throw new Error("MONGO_URI is not set in environment variables.");
+      }
+    
+      const client = new MongoClient(mongoUri);
+      await client.connect();
+      db = client.db("casting-db"); // Set the database instance
+    } catch (error) {
+      console.error("Failed to connect to MongoDB:", error);
+      throw new Error("Failed to connect to MongoDB");
+    }
+  }
+  return db;
+};
 
 fal.config({
   credentials: process.env.FAL_AI_API_KEY!,
 });
-
-const client = new MongoClient(process.env.MONGODB_URI!);
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
@@ -34,9 +57,13 @@ export async function POST(req: NextRequest) {
 
     const upscaledImageUrl = result.data?.image?.url || imageUrl;
 
-    // Store in MongoDB
-    const db = client.db("casting-db");
-    await db.collection("upscaledImages").insertOne({ userId, imageUrl: upscaledImageUrl, createdAt: new Date() });
+    // Connect to DB and insert the data
+    const db = await connectToDB();
+    await db.collection("upscaledImages").insertOne({
+      userId,
+      imageUrl: upscaledImageUrl,
+      createdAt: new Date(),
+    });
 
     return NextResponse.json({ upscaledImageUrl });
   } catch (error) {

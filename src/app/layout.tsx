@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fondamento, Georama } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/provider/ThemeProvider";
+import { Providers } from "@/provider/WalletProvider";
 
 const inter = Georama({
   subsets: ["latin"],
@@ -38,7 +39,8 @@ const shadows = Fondamento({
 
 export const metadata: Metadata = {
   title: "MØNKS Casting",
-  description: "Bring your MØNK to life with AI-powered upscaling and character insights",
+  description:
+    "Bring your MØNK to life with AI-powered upscaling and character insights",
 };
 
 export default function RootLayout({
@@ -48,8 +50,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${shadows.variable} font-regular tracking-wide`}>
-      <div className="fixed left-0 top-0 -z-10 h-full w-full">
+      <body
+        className={`${inter.variable} ${shadows.variable} font-regular tracking-wide`}
+      >
+        <div className="fixed left-0 top-0 -z-10 h-full w-full">
           <div className="absolute inset-0 -z-10 h-screen w-full bg-background [background:radial-gradient(125%_125%_at_50%_10%,#160b04_40%,#643212_100%)]"></div>
         </div>
         <ThemeProvider
@@ -58,7 +62,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-         {children}
+          <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
     </html>
