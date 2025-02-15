@@ -15,7 +15,6 @@ const connectToDB = async () => {
       if (!mongoUri) {
         throw new Error("MONGO_URI is not set in environment variables.");
       }
-    
       const client = new MongoClient(mongoUri);
       await client.connect();
       db = client.db("casting-db"); // Set the database instance
