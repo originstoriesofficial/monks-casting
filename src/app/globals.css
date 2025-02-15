@@ -32,7 +32,6 @@
     --card: 30 50% 12%; /* Darker but slightly warmer */
     --card-foreground: 12 50% 30%;
 
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
@@ -63,6 +62,10 @@
   }
   body {
     @apply bg-background text-secondary;
+    background-image: url('/background-pattern.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
 }
 
@@ -89,10 +92,8 @@
 }
 
 .quest_card {
-  display: -webkit-box; 
-  display: -ms-flexbox; 
   display: flex;
-  margin-left: -30px; 
+  margin-left: -30px;
   width: auto;
 }
 .quest_card_column {
@@ -100,9 +101,7 @@
   background-clip: padding-box;
 }
 
-
 .quest_card_column > div {
-
   background: grey;
   margin-bottom: 30px;
 }
@@ -113,9 +112,6 @@
     4px 4px 12px rgba(200, 200, 200, 0.3), /* Subtle grey shadow */
     6px 6px 16px rgba(0, 0, 0, 0.2); /* Faint dark shadow */
 }
-
-
-
 
 html::-webkit-scrollbar {
   width: 3px;
@@ -136,3 +132,34 @@ html::-webkit-scrollbar-thumb {
   background: white;
   border-radius: 5px;
 }
+
+@keyframes shimmer {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+.shimmer-text {
+  animation: shimmer 2.5s infinite;
+}
+
+/* Floating Castle */
+.floating-castle {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: auto;
+  animation: floatUpDown 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatUpDown {
+  from {
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+

@@ -37,8 +37,8 @@ const shadows = Fondamento({
 });
 
 export const metadata: Metadata = {
-  title: "Prophecy Pool",
-  description: "Bet on Episodes",
+  title: "MØNKS Casting",
+  description: "Bring your MØNK to life with AI-powered upscaling and character insights",
 };
 
 export default function RootLayout({
