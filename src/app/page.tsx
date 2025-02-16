@@ -288,7 +288,6 @@ export default function CastingAI() {
           <div className="w-full max-w-xl mx-auto mt-8 p-6 bg-gray-800/50 rounded-lg border border-primary/20">
             <h3 className="text-xl font-bold text-primary mb-4">Character Breakdown</h3>
             <div className="prose prose-invert max-w-none p-6 rounded-lg bg-gray-900 text-white shadow-lg border border-gray-700">
-      <h2 className="text-3xl font-bold text-teal-400 mb-4">Hollywood Casting Sheet</h2>
       <div className="space-y-4">
         {breakdown.split("\n\n").map((section, index) => (
           <p key={index} className="text-lg leading-relaxed">{section}</p>
