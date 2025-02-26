@@ -13,34 +13,40 @@ fal.config({
 interface RequestBody {
   visionAttributes: string;
   blockchainAttributes: any;
+  name: string;
 }
 
 // System prompt for character generation
 const SYSTEM_MESSAGE = `
-  You are a professional production company creating a character for an epic TV series.
-  Given the blockchain attributes and vision analysis, generate a **Hollywood-style casting sheet** and a **character stat card**.
+  You are a professional production company creating a character for a TV series that blends ancient monastery culture with modern technology. 
+  Given the blockchain attributes and vision analysis,
+  (here you need to pass the attributes from the token id)
+  generate a Hollywood-style casting sheet and a character stat card.
 
-  🎭 **Mantle Monks Setting & Premise**:
-  - A monastery caught in a **timeline split**, forced to navigate **modern hustle culture**.
-  - Monks balancing **ancient wisdom with crypto, NFTs, and digital survival.**
+  Mantle Monks Setting & Premise:
+  - A monastery caught in a timeline split is forced to navigate modern hustle culture in their quest to pay rent.
+  - Monks balancing ancient wisdom with emerging tech (like crypto, AI, blockchain, XR, and digital survival).
   - Satirical, cinematic, and darkly humorous.
 
-  🎭 **Character Breakdown**
-  - **Character Name & Title**: (Auto-generate if missing)
-  - **Abilities & Power Level**: {blockchainAttributes}
-  - **Hollywood Role Type**: Hero / Anti-hero / Mentor / Villain
-  - **Strengths & Weaknesses**: (Make it cinematic & dramatic)
-  - **Signature Moves & Combat Style**: (If applicable)
-  - **Catchphrase / One-liner**: (Make it iconic)
+  🎭 Character Breakdown
+  - Character Name: {name}
+  - Hollywood Role Type: Sidekick / Hero / Anti-hero / Mentor / Villain / NPC, etc.
+  - Signature Move
+  - Catchphrase / One-liner: (Make it iconic)
+  - Strengths & Weaknesses: (Make it cinematic & dramatic)
+  
+  🔮 Character Attributes
+  - Vision Attributes: {visionAttributes}
+  - Blockchain Attributes: {blockchainAttributes}
 
-  🎮 **Refined Character Stat Card**
-  | **Stat**         | **Value** |
+  🎮 Refined Character Stat Card
+  | Stat         | Value |
   |-----------------|----------|
-  | **KARMA**        | [Zen / Hustler / Chaos] |
-  | **GRIT**         | {blockchainAttributes.gritLevel} |
-  | **MANTRA POWER** | {blockchainAttributes.mantraPower} |
-  | **COMBAT STYLE** | [Stylized Monk Blades, Energy-Infused Fists] |
-  | **SIGNATURE RELIC** | [Custom Prayer Beads, Enchanted Scroll Holders] |
+  | KARMA        | [Zen / Hustler / Chaos] |
+  | GRIT         | [High / Low / Medium / Undetectable / Iconic / Legendary / Fleeting] |
+  | MANTRA POWER | Combine the energy of the color {color} with the spirit of the animal {animal} to create a unique Mantra Power of no more than three words. |
+  | HUSTLE SKILL | [Street, Dynasty, White Collar, Shady, Red Tape, etc.] |
+  | SIGNATURE RELIC | [What they are holding in their hand in the contract] |
 
   Be witty, irreverent, sarcastic, and dry, capturing the tone of the "Mantle Monks" series.
 `;
@@ -85,8 +91,7 @@ export async function POST(request: NextRequest) {
     console.log("Raw request body:", rawBody);
     const body = JSON.parse(rawBody) as RequestBody;
 
-
-    const formattedBlockchainAttributes = body.blockchainAttributes.reduce(
+    const formattedBlockchainAttributes = body.blockchainAttributes?.reduce(
       (acc: any, attr: any) => {
         acc[attr.trait_type] = attr.value;
         return acc;
@@ -94,10 +99,17 @@ export async function POST(request: NextRequest) {
       {} as Record<string, any>
     );
 
+    // Extract specific attributes for customization
+    const color = formattedBlockchainAttributes["Color"] || "Unknown";
+    const animal = formattedBlockchainAttributes["Animal"] || "Unknown";
+
     // Prepare dynamic system prompt with request data
     const dynamicSystemMessage = SYSTEM_MESSAGE
+      .replace("{name}", body.name)
       .replace("{visionAttributes}", JSON.stringify(body.visionAttributes))
-      .replace("{blockchainAttributes}", JSON.stringify(formattedBlockchainAttributes));
+      .replace("{blockchainAttributes}", JSON.stringify(formattedBlockchainAttributes))
+      .replace("{color}", color)
+      .replace("{animal}", animal);
 
     // Generate character using FAL AI
     const result = await fal.subscribe("fal-ai/any-llm", {

@@ -68,6 +68,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ upscaledImageUrl });
   } catch (error) {
     console.error("Error upscaling image:", error);
-    return NextResponse.json({ error: "Failed to upscale image" }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message || "Error in upscaling" }, { status: 500 });
   }
 }
