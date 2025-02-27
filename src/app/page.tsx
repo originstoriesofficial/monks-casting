@@ -7,6 +7,7 @@ import { MonksCastingNavbar } from "@/components/MonksCastingNavbar";
 import CustomMonkButton from "@/components/CustomMonkButton";
 import CustomMonkInput from "@/components/CustomInput";
 import CharacterPage from "@/components/CharacterBreakdown";
+import { checkOwnership } from "@/lib/contract";
 
 interface Metadata {
   attributes: any;
@@ -65,6 +66,12 @@ export default function CastingAI() {
     // Ensure wallet is connected
     if (!isConnected || !address) {
       showStatus("Please connect your wallet.", "error");
+      return;
+    }
+
+    const isOwner = await checkOwnership(tokenId, address);
+    if (!isOwner) {
+      showStatus("You are not the owner of this token.", "error");
       return;
     }
 
