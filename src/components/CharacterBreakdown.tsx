@@ -1,5 +1,5 @@
 // app/character/page.tsx
-import { parseApiToCharacter, type CharacterData } from "@/lib/utils";
+import { parseApiToCharacter } from "@/lib/utils";
 import CharacterProfile from "@/components/CharacterProfile";
 
 // Define the API fetch function
@@ -7,17 +7,14 @@ import CharacterProfile from "@/components/CharacterProfile";
 export default  function CharacterPage(markdownData: string,imageData: string) {
 
 console.log({markdownData,imageData}, 'frontend data here');
-  
-  // Parse the markdown into our character data structure
 
-  // const parsedData = JSON.parse(markdownData);
 
-  const characterData: CharacterData = parseApiToCharacter(markdownData,imageData);
-  // console.log({characterData});
+  const characterData = parseApiToCharacter(markdownData,imageData);
+  console.log({characterData});
   
   return (
     <main className="container mx-auto p-4">
-      <CharacterProfile {...characterData} />
+      <CharacterProfile characterData={characterData}  />
     </main>
   );
 }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/character/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { fal } from "@fal-ai/client";
@@ -95,7 +97,7 @@ Generate a character profile using the provided blockchain and vision attributes
 \`\`\`
 
 IMPORTANT: 
-- Return ONLY valid JSON with no additional text before or after
+- strengths ,weaknesses should be array of 3 elements and each elements should be of 1-2 words only 
 - For mantraPower, combine the energy of the color {color} with the spirit of the animal {animal} to create a unique ability
 - Each stat in the statCard should have exactly one value, not multiple options
 - Be witty, irreverent, sarcastic and dry to match the tone of the series
@@ -182,7 +184,7 @@ async function calculateHP(walletAddress: string): Promise<number> {
   }
 }
 
-async function saveCharacterToDB(
+export async function saveCharacterToDB(
   tokenId: string | number,
   visionAttributes: string,
   blockchainAttributes: Record<string, any>,

@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 interface ButtonProps {
-  text: string;
+  text: string | number;
   className?: string;
 }
 

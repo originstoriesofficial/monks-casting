@@ -49,6 +49,8 @@ export default function CastingAI() {
     setTimeout(() => setStatus({ message: "", type: "" }), 5000);
   };
 
+
+
   // Helper function to convert an ipfs:// URL to a gateway URL
   const convertIPFSToGatewayUrl = (ipfsUrl: string) => {
     if (ipfsUrl.startsWith("ipfs://")) {
@@ -56,6 +58,7 @@ export default function CastingAI() {
     }
     return ipfsUrl;
   };
+
 
   const fetchMetadataAndUpscale = async () => {
     if (!tokenId) {
@@ -178,6 +181,7 @@ export default function CastingAI() {
   };
 
   // Render the appropriate content based on the current step
+  console.log({breakdown})
   const renderContent = () => {
     if(!isConnected){
       return <div>Please connect your wallet to proceed.</div>
@@ -303,6 +307,7 @@ export default function CastingAI() {
           {status.message}
         </div>
       )}
+    
 
       {renderContent()}
     </div>
