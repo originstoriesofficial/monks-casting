@@ -198,7 +198,7 @@ async function saveCharacterToDB(
   const client = new MongoClient(mongoUri);
   try {
     await client.connect();
-    const db = client.db("casting-db");
+    const db = client.db("Cluster0");
     const collection = db.collection("characters");
 
     const mongoData = {
@@ -226,14 +226,15 @@ export async function POST(request: NextRequest) {
     const rawBody = await request.text();
     console.log("Raw request body:", rawBody);
     const body = JSON.parse(rawBody) as RequestBody;
+    console.log(body, 'log Body')
 
     // Validate required fields
-    if (!body.tokenId) {
-      return NextResponse.json(
-        { success: false, error: "Missing tokenId in request" },
-        { status: 400 }
-      );
-    }
+    // if (!body.tokenId) {
+    //   return NextResponse.json(
+    //     { success: false, error: "Missing tokenId in request" },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Fetch blockchain attributes from token
     const blockchainAttributesArray = await fetchTokenMetadata(body.tokenId);
@@ -273,64 +274,71 @@ export async function POST(request: NextRequest) {
       .replace("{animal}", animal)
       .replace("{hp}", hp.toString());
 
+      console.log("Dynamic system messages:", dynamicSystemMessage);
+
     // Generate character using FAL AI
     const result = await fal.subscribe("fal-ai/any-llm", {
       input: {
-        model: "google/gemini-flash-1.5",
-        system_prompt: dynamicSystemMessage,
-        prompt: JSON.stringify({
-          visionAttributes: body.visionAttributes,
-          blockchainAttributes: formattedBlockchainAttributes,
-          name: body.name,
-          tokenId: body.tokenId,
-          hp: hp
-        }),
+        // model: "google/gemini-flash-1.5",
+        // system_prompt: dynamicSystemMessage,
+        prompt: dynamicSystemMessage
+        // "What is the meaning of life?"
+        
+        // JSON.stringify({
+        //   visionAttributes: body.visionAttributes,
+        //   blockchainAttributes: formattedBlockchainAttributes,
+        //   name: body.name,
+        //   tokenId: body.tokenId,
+        //   hp: hp
+        // }),
       },
     });
 
     const output = result.data?.output || "No response available.";
+    console.log("FAL AI output:", output);
     
     // Try to parse the output as JSON
-    let characterData: CharacterResponse;
-    try {
+    // let characterData: CharacterResponse;
+    // console.log(characterData, 'characterData')
+    // try {
       // Extract JSON from the markdown code block if present
-      const jsonMatch = output.match(/```json\n([\s\S]*?)\n```/);
-      characterData = jsonMatch ? JSON.parse(jsonMatch[1]) : JSON.parse(output);
-    } catch (e) {
-      console.warn("Could not parse character output as JSON:", e);
+      // const jsonMatch = output.match(/```json\n([\s\S]*?)\n```/);
+      // characterData = jsonMatch ? JSON.parse(jsonMatch[1]) : JSON.parse(output);
+    // } catch (e) {
+      // console.warn("Could not parse character output as JSON:", e);
       // Use a fallback structure if parsing fails
-      characterData = {
-        name: body.name,
-        roleType: "NPC",
-        signatureMove: "Default Move",
-        catchphrase: "Default Catchphrase",
-        hp: hp,
-        statCard: {
-          karma: "Zen",
-          grit: "Medium",
-          mantraPower: `${color} ${animal} Energy`,
-          hustleSkill: "Street",
-          signatureRelic: "Default Relic"
-        },
-        strengths: ["Default strength"],
-        weaknesses: ["Default weakness"]
-      };
-    }
+      // characterData = {
+      //   name: body.name,
+      //   roleType: "NPC",
+      //   signatureMove: "Default Move",
+      //   catchphrase: "Default Catchphrase",
+      //   hp: hp,
+      //   statCard: {
+      //     karma: "Zen",
+      //     grit: "Medium",
+      //     mantraPower: `${color} ${animal} Energy`,
+      //     hustleSkill: "Street",
+      //     signatureRelic: "Default Relic"
+      //   },
+      //   strengths: ["Default strength"],
+      //   weaknesses: ["Default weakness"]
+      // };
+    // }
 
     // Save to MongoDB
-    await saveCharacterToDB(
-      body.tokenId,
-      body.visionAttributes,
-      formattedBlockchainAttributes,
-      characterData,
-      hp
-    );
+    // await saveCharacterToDB(
+      // body.tokenId,
+      // body.visionAttributes,
+      // formattedBlockchainAttributes,
+      // characterData,
+      // hp
+    // );
 
     // Return success response
     return NextResponse.json(
       {
         success: true,
-        data: characterData,
+        data: output,
         tokenMetadata: {
           tokenId: body.tokenId,
           animal: animal,

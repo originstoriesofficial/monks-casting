@@ -6,12 +6,14 @@ import CharacterProfile from "@/components/CharacterProfile";
 
 export default  function CharacterPage(markdownData: string,imageData: string) {
 
-console.log({markdownData,imageData});
-
+console.log({markdownData,imageData}, 'frontend data here');
   
   // Parse the markdown into our character data structure
+
+  // const parsedData = JSON.parse(markdownData);
+
   const characterData: CharacterData = parseApiToCharacter(markdownData,imageData);
-  console.log({characterData});
+  // console.log({characterData});
   
   return (
     <main className="container mx-auto p-4">

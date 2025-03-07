@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     // Connect to the Mantle blockchain
     const provider = new ethers.JsonRpcProvider(RPC_URL);
     const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
-
+console.log(tokenId, 'valid tokenId')
     // Fetch the tokenURI (metadata URL) from the smart contract
     const tokenURI = await contract.tokenURI(tokenId);
     

@@ -18,7 +18,7 @@ const connectToDB = async () => {
       console.log(mongoUri)
       const client = new MongoClient(mongoUri);
       await client.connect();
-      db = client.db("casting-db"); // Set the database instance
+      db = client.db("Cluster0"); // Set the database instance
     } catch (error) {
       console.error("Failed to connect to MongoDB:", error);
       throw new Error("Failed to connect to MongoDB");

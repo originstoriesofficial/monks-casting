@@ -140,7 +140,8 @@ export default function CastingAI() {
       const formData = {
         visionAttributes: upscaledImage,
         blockchainAttributes: metadata?.attributes,
-        name:characterName
+        name:characterName,
+        tokenId: 332
       };
 
       console.log({formData})
@@ -152,7 +153,8 @@ export default function CastingAI() {
 
       if (!response.ok) throw new Error("Failed to generate character");
       const data = await response.json();
-      setBreakdown(data.data);
+      console.log({data}, 'page.tsx data')
+      setBreakdown(data);
       setCurrentStep("breakdown");
       showStatus("Character generated successfully!", "success");
     } catch (error) {
