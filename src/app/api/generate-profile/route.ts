@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/character/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { fal } from "@fal-ai/client";
@@ -61,7 +60,7 @@ interface CharacterResponse {
   weaknesses: string[];
 }
 
-// Updated system prompt with better formatting and layout instructions
+// Updated system prompt with more explicit formatting instructions
 const SYSTEM_MESSAGE = `
 You are creating a character for the "Mantle Monks" TV series that blends monastery culture with modern tech.
 Generate a character profile using the provided blockchain and vision attributes.
@@ -96,13 +95,13 @@ Generate a character profile using the provided blockchain and vision attributes
 \`\`\`
 
 IMPORTANT: 
+- Return ONLY valid JSON with no additional text before or after
 - For mantraPower, combine the energy of the color {color} with the spirit of the animal {animal} to create a unique ability
 - Each stat in the statCard should have exactly one value, not multiple options
 - Be witty, irreverent, sarcastic and dry to match the tone of the series
 - The character's HP is {hp} and must be included exactly as provided
 - Focus on tech/crypto/blockchain themes in their strengths and weaknesses
 - Create signature moves and catchphrases that reflect their tech monk identity
-- The character will be displayed with the statCard info on the left side and character details on the right
 `;
 
 // Function to fetch token metadata from Mantle blockchain
@@ -268,29 +267,26 @@ export async function POST(request: NextRequest) {
     // Prepare dynamic system prompt with request data
     const dynamicSystemMessage = SYSTEM_MESSAGE
       .replace("{name}", body.name)
-      .replace("{visionAttributes}", JSON.stringify(body.visionAttributes))
-      .replace("{blockchainAttributes}", JSON.stringify(formattedBlockchainAttributes))
+      .replace("{hp}", hp.toString())
       .replace("{color}", color)
-      .replace("{animal}", animal)
-      .replace("{hp}", hp.toString());
+      .replace("{animal}", animal);
+
+    console.log("Dynamic system message:", dynamicSystemMessage);
 
       console.log("Dynamic system messages:", dynamicSystemMessage);
 
     // Generate character using FAL AI
     const result = await fal.subscribe("fal-ai/any-llm", {
       input: {
-        // model: "google/gemini-flash-1.5",
-        // system_prompt: dynamicSystemMessage,
-        prompt: dynamicSystemMessage
-        // "What is the meaning of life?"
-        
-        // JSON.stringify({
-        //   visionAttributes: body.visionAttributes,
-        //   blockchainAttributes: formattedBlockchainAttributes,
-        //   name: body.name,
-        //   tokenId: body.tokenId,
-        //   hp: hp
-        // }),
+        model: "google/gemini-flash-1.5",
+        system_prompt: dynamicSystemMessage,
+        prompt: JSON.stringify({
+          visionAttributes: body.visionAttributes,
+          blockchainAttributes: formattedBlockchainAttributes,
+          name: body.name,
+          tokenId: body.tokenId,
+          hp: hp
+        }),
       },
     });
 
@@ -298,32 +294,31 @@ export async function POST(request: NextRequest) {
     console.log("FAL AI output:", output);
     
     // Try to parse the output as JSON
-    // let characterData: CharacterResponse;
-    // console.log(characterData, 'characterData')
-    // try {
+    let characterData: CharacterResponse;
+    try {
       // Extract JSON from the markdown code block if present
-      // const jsonMatch = output.match(/```json\n([\s\S]*?)\n```/);
-      // characterData = jsonMatch ? JSON.parse(jsonMatch[1]) : JSON.parse(output);
-    // } catch (e) {
-      // console.warn("Could not parse character output as JSON:", e);
+      const jsonMatch = output.match(/```json\n([\s\S]*?)\n```/);
+      characterData = jsonMatch ? JSON.parse(jsonMatch[1]) : JSON.parse(output);
+    } catch (e) {
+      console.warn("Could not parse character output as JSON:", e);
       // Use a fallback structure if parsing fails
-      // characterData = {
-      //   name: body.name,
-      //   roleType: "NPC",
-      //   signatureMove: "Default Move",
-      //   catchphrase: "Default Catchphrase",
-      //   hp: hp,
-      //   statCard: {
-      //     karma: "Zen",
-      //     grit: "Medium",
-      //     mantraPower: `${color} ${animal} Energy`,
-      //     hustleSkill: "Street",
-      //     signatureRelic: "Default Relic"
-      //   },
-      //   strengths: ["Default strength"],
-      //   weaknesses: ["Default weakness"]
-      // };
-    // }
+      characterData = {
+        name: body.name,
+        roleType: "NPC",
+        signatureMove: "Default Move",
+        catchphrase: "Default Catchphrase",
+        hp: hp,
+        statCard: {
+          karma: "Zen",
+          grit: "Medium",
+          mantraPower: `${color} ${animal} Energy`,
+          hustleSkill: "Street",
+          signatureRelic: "Default Relic"
+        },
+        strengths: ["Default strength"],
+        weaknesses: ["Default weakness"]
+      };
+    }
 
     // Save to MongoDB
     // await saveCharacterToDB(
@@ -334,7 +329,7 @@ export async function POST(request: NextRequest) {
       // hp
     // );
 
-    // Return success response
+    // Return success response with properly formatted character data
     return NextResponse.json(
       {
         success: true,
