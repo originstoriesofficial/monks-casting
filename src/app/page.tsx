@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import MonksCastingStudio from "@/components/MonksCastingStudio";
 import { MonksCastingNavbar } from "@/components/MonksCastingNavbar";
@@ -48,6 +48,33 @@ export default function CastingAI() {
     setStatus({ message, type });
     setTimeout(() => setStatus({ message: "", type: "" }), 5000);
   };
+
+  const trackPoints = async () => {
+    try {
+      const response = await fetch("https://playground-s7c9.onrender.com/stack/track", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          event_name: "connect wallet",
+          points: 1,
+          account: address,
+        }),
+      });
+  
+      const result = await response.json();
+      console.log("Tracking response:", result);
+    } catch (error) {
+      console.error("Error tracking points:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isConnected && address) {
+      trackPoints();
+    }
+  }, [isConnected, address]);
 
 
 

@@ -1,4 +1,4 @@
-mport React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
 export default function CharacterForm() {
@@ -37,6 +37,7 @@ export default function CharacterForm() {
       }
 
       const result = await response.json();
+      console.log(result)
       
       // Redirect to the newly created character page
       router.push(`/character/${formData.tokenId}`);
