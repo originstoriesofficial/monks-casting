@@ -1,6 +1,7 @@
 import React from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const MonksCastingNavbar: React.FC = () => {
   return (
@@ -12,6 +13,19 @@ export const MonksCastingNavbar: React.FC = () => {
             Mønks Casting Studio
           </h1>
         </div>
+        <div className="flex items-center gap-x-4">
+      {/* <p className="text-white">Leaderboard</p> */}
+      <Link
+        href="/leaderboard"
+        className="text-brown-400 hover:text-brown-600 transition font-semibold"
+      >
+        Leaderboard
+      </Link>
+    </div>
+
+        {/* <div className="flex items-center gap-x-4">
+          <p className='text-white'>Leaderboard</p>
+          </div> */}
 
         {/* Right Section: Key Icon & Connect Button */}
         <div className="flex items-center gap-x-3">
