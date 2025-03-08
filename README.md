@@ -1,9 +1,13 @@
-READ ME (ADDITIONAL PROJECT INFO FROM WEEK 3 OF SOZU HAUS AI HACK
+READ ME (ADDITIONAL PROJECT INFO FOR NOT DENVER AI HACK
 
-This week we worked on
+SHOWRUNNER AGENT FOR THE "MØNKS SERIES
+https://notebooklm.google.com/notebook/c296c8e1-5afe-4404-aafb-e402121f6049
 
-User-Driven Agents: Character Design
-Extending creativity to the user in via Monks Casting Studio
-Prototyped Lipsync Tool - Workflow.Json in 
+ComfyUI - API for real-time video -https://www.comfyonline.app/workflow_api/3ce31f29-5665-484d-9f14-91b382bc80c6
+Json Attached (Monks_MimicMotion).json
 
-Walk through of how to use the JSON File in ComfyUI for the lipsync tool - https://youtu.be/VTINfV5vXDk
+DECK -https://docs.google.com/presentation/d/1aAvD7kgc3XA_G51pov9PWSoRNo_Tzu2FT-2_6eng4gc/edit?usp=sharing
+
+"Digital Hustle" Video Preview
+
+https://youtu.be/8b6IBqrnFLc
