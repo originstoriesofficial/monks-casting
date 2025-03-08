@@ -1,4 +1,5 @@
 // pages/character/[id].tsx or app/character/[id]/page.tsx (depending on your Next.js setup)
+"use client"
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import CharacterCard from '@/components/CharacterCard';
