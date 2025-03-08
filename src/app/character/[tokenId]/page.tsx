@@ -1,8 +1,8 @@
-// pages/character/[id].tsx or app/character/[id]/page.tsx (depending on your Next.js setup)
-"use client"
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import CharacterCard from '@/components/CharacterCard';
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation"; // ✅ Corrected import
+import CharacterCard from "@/components/CharacterCard";
 
 interface CharacterData {
   name: string;
@@ -22,33 +22,31 @@ interface CharacterData {
 }
 
 export default function CharacterPage() {
-  const router = useRouter();
-  const { id } = router.query;
+  const { id } = useParams(); // ✅ Fixed `router.query` issue
   const [character, setCharacter] = useState<CharacterData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) return; // ✅ Ensures `id` is available before fetching
 
-    async function fetchCharacter() {
+    const fetchCharacter = async () => {
       try {
         setLoading(true);
-        // You'd typically fetch this from your API
         const response = await fetch(`/api/character/${id}`);
-        
+
         if (!response.ok) {
-          throw new Error('Failed to fetch character data');
+          throw new Error("Failed to fetch character data");
         }
-        
+
         const result = await response.json();
         setCharacter(result.data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchCharacter();
   }, [id]);
