@@ -1,5 +1,7 @@
 READ ME (ADDITIONAL PROJECT INFO FOR NOT DENVER AI HACK
 
+POC - CHARACTER CARDS - https://monks-casting.vercel.app/
+
 SHOWRUNNER AGENT FOR THE "MØNKS SERIES
 https://notebooklm.google.com/notebook/c296c8e1-5afe-4404-aafb-e402121f6049
 
