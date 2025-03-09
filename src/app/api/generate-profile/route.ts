@@ -184,42 +184,42 @@ async function calculateHP(walletAddress: string): Promise<number> {
   }
 }
 
-export async function saveCharacterToDB(
-  tokenId: string | number,
-  visionAttributes: string,
-  blockchainAttributes: Record<string, any>,
-  characterData: CharacterResponse,
-  hp: number
-) {
-  const mongoUri = process.env.MONGODB_URI;
-  if (!mongoUri) {
-    throw new Error("MONGODB_URI is not set in environment variables.");
-  }
+// async function saveCharacterToDB(
+//   tokenId: string | number,
+//   visionAttributes: string,
+//   blockchainAttributes: Record<string, any>,
+//   characterData: CharacterResponse,
+//   hp: number
+// ) {
+//   const mongoUri = process.env.MONGODB_URI;
+//   if (!mongoUri) {
+//     throw new Error("MONGODB_URI is not set in environment variables.");
+//   }
 
-  const client = new MongoClient(mongoUri);
-  try {
-    await client.connect();
-    const db = client.db("Cluster0");
-    const collection = db.collection("characters");
+//   const client = new MongoClient(mongoUri);
+//   try {
+//     await client.connect();
+//     const db = client.db("Cluster0");
+//     const collection = db.collection("characters");
 
-    const mongoData = {
-      tokenId,
-      visionAttributes,
-      blockchainAttributes,
-      characterData,
-      hp,
-      createdAt: new Date(),
-    };
+//     const mongoData = {
+//       tokenId,
+//       visionAttributes,
+//       blockchainAttributes,
+//       characterData,
+//       hp,
+//       createdAt: new Date(),
+//     };
 
-    await collection.insertOne(mongoData);
-    console.log("✅ Character saved to MongoDB");
-  } catch (error) {
-    console.error("❌ Error saving character to MongoDB:", error);
-    throw error;
-  } finally {
-    await client.close();
-  }
-}
+//     await collection.insertOne(mongoData);
+//     console.log("✅ Character saved to MongoDB");
+//   } catch (error) {
+//     console.error("❌ Error saving character to MongoDB:", error);
+//     throw error;
+//   } finally {
+//     await client.close();
+//   }
+// }
 
 export async function POST(request: NextRequest) {
   try {

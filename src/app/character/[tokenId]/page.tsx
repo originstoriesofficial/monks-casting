@@ -1,29 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; // ✅ Corrected import
 import CharacterCard from "@/components/CharacterCard";
 
-interface CharacterData {
-  name: string;
-  roleType: string;
-  signatureMove: string;
-  catchphrase: string;
-  hp: number;
-  statCard: {
-    karma: string;
-    grit: string;
-    mantraPower: string;
-    hustleSkill: string;
-    signatureRelic: string;
-  };
-  strengths: string[];
-  weaknesses: string[];
-}
+
 
 export default function CharacterPage() {
   const { id } = useParams(); // ✅ Fixed `router.query` issue
-  const [character, setCharacter] = useState<CharacterData | null>(null);
+  const [character, setCharacter] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -57,7 +43,7 @@ export default function CharacterPage() {
 
   return (
     <div className="p-4 md:p-8 flex justify-center items-center min-h-screen bg-gray-900">
-      <CharacterCard character={character} />
+      <CharacterCard characterData={character} />
     </div>
   );
 }

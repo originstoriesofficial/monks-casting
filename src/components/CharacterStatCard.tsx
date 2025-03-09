@@ -32,7 +32,7 @@ const CharacterStatCard: React.FC<StatCardProps> = ({
   color,
   imageUrl = '/placeholder-monk.png', // Default placeholder image
 }) => {
-  const { name, roleType, signatureMove, catchphrase, hp, statCard, strengths, weaknesses } = character;
+  const { name, signatureMove, catchphrase, hp, statCard, strengths, weaknesses } = character;
   
   // Function to render rating dots (filled and unfilled)
   const renderRating = (value: string) => {
@@ -87,7 +87,7 @@ const CharacterStatCard: React.FC<StatCardProps> = ({
             className="object-contain"
           />
           <div className="absolute bottom-0 w-full bg-black bg-opacity-70 p-1 text-center text-white">
-            "{catchphrase}"
+            &quot;{catchphrase}&quot;
           </div>
         </div>
         

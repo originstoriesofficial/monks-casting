@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { MonksCastingFrame } from './MonksCastingFrame';
 import CustomMonkButton from './CustomMonkButton';

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 // components/CharacterCard.jsx
 import React from "react";
 
