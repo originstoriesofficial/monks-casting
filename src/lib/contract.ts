@@ -14,6 +14,7 @@ export const checkOwnership = async (tokenId: string, walletAddress: string) => 
 
         // Call the `ownerOf` function
         const owner = await contract.ownerOf(tokenId);
+        console.log({owner})
 
         // Compare with connected wallet address
         if (owner.toLowerCase() !== walletAddress.toLowerCase()) {

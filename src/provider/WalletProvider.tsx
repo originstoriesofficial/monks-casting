@@ -5,16 +5,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ConnectKitProvider } from "connectkit";
 import { RainbowKitProvider, getDefaultConfig, darkTheme } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
-import { mantleSepoliaTestnet } from 'viem/chains';
+import { mantle } from 'viem/chains';
 
 
 export const config = getDefaultConfig({
     appName: 'MonksCasting',
     projectId: '066465a4f5d400c9eccad76612f98c5a', 
-    chains: [mantleSepoliaTestnet],
+    chains: [mantle],
     transports: {
 
-        [mantleSepoliaTestnet.id]: http(),
+        // [mantleSepoliaTestnet.id]: http(),
+        [mantle.id]:http()
     }
 })
 
@@ -30,7 +31,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     borderRadius: "medium",
                     fontStack: "system",
                     overlayBlur: "small",
-                })} initialChain={mantleSepoliaTestnet}>
+                })} initialChain={mantle}>
                     <ConnectKitProvider>{children}</ConnectKitProvider>
                 </RainbowKitProvider>
             </QueryClientProvider>
