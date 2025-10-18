@@ -3,47 +3,50 @@ import { NextRequest, NextResponse } from "next/server";
 import { fal } from "@fal-ai/client";
 import { MongoClient, Db } from "mongodb";
 
-export const runtime = "nodejs"; // ✅ Edge → Node so SRV DNS works
+export const runtime = "nodejs"; // Use Node runtime (Edge can't resolve mongodb+srv SRV records)
 
+// ---- FAL config ----
 fal.config({ credentials: process.env.FAL_AI_API_KEY! });
 
 // ---- Mongo singleton (serverless-safe) ----
-let client: MongoClient | undefined;
-let db: Db | undefined;
+let _client: MongoClient | undefined;
+let _db: Db | undefined;
 
-// optionally set DB name via env; fallback to "monks"
 const DB_NAME = process.env.MONGODB_DB || "monks";
 
 async function getDb(): Promise<Db> {
-  if (db) return db;
+  if (_db) return _db;
+
   const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error("MONGODB_URI is not set");
+  if (!uri) {
+    throw new Error("MONGODB_URI is not set");
+  }
 
-  // NEVER log secrets:
-  // console.log(uri);  // ❌ remove this
-
-  client = client ?? new MongoClient(uri);
-  await client.connect();
-  db = client.db(DB_NAME);
-  return db;
+  // Do NOT log the URI; treat it as secret.
+  _client = _client ?? new MongoClient(uri);
+  await _client.connect();
+  _db = _client.db(DB_NAME);
+  return _db;
 }
-// -------------------------------------------
 
+// ---- Handler ----
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
-    const photo = formData.get("photo") as File | null;
-    const userId = formData.get("userId") as string | null;
+    const photo = formData.get("photo");
+    const userId = formData.get("userId");
 
-    if (!photo || !userId) {
+    if (!(photo instanceof File) || typeof userId !== "string" || userId.length === 0) {
       return NextResponse.json(
-        { error: "Photo and userId are required" },
+        { error: "Photo (File) and userId (string) are required" },
         { status: 400 }
       );
     }
 
+    // Upload to FAL storage
     const imageUrl = await fal.storage.upload(photo);
 
+    // Run upscaler
     const result = await fal.subscribe("fal-ai/clarity-upscaler", {
       input: {
         image_url: imageUrl,
@@ -56,20 +59,23 @@ export async function POST(req: NextRequest) {
       logs: true,
     });
 
-    const upscaledImageUrl = result.data?.image?.url || imageUrl;
+    const upscaledImageUrl =
+      (result as { data?: { image?: { url?: string } } })?.data?.image?.url || imageUrl;
 
-    const database = await getDb();
-    await database.collection("upscaledImages").insertOne({
+    // Persist in Mongo
+    const db = await getDb();
+    await db.collection("upscaledImages").insertOne({
       userId,
       imageUrl: upscaledImageUrl,
       createdAt: new Date(),
     });
 
-    return NextResponse.json({ upscaledImageUrl });
-  } catch (err: any) {
-    console.error("Error upscaling image:", err);
+    return NextResponse.json({ upscaledImageUrl }, { status: 200 });
+  } catch (err) {
+    const error = err instanceof Error ? err : new Error(String(err));
+    console.error("Error upscaling image:", error);
     return NextResponse.json(
-      { error: err?.message || "Error in upscaling" },
+      { error: error.message || "Error in upscaling" },
       { status: 500 }
     );
   }
