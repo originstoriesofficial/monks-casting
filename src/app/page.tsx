@@ -211,9 +211,9 @@ export default function CastingAI() {
   // Render the appropriate content based on the current step
   console.log({breakdown})
   const renderContent = () => {
-    if(!isConnected){
-      return <div>Please connect your wallet to proceed.</div>
-    }else{
+    if (!isConnected) {
+      return <div>Please connect your wallet to proceed.</div>;
+    } else {
       switch (currentStep) {
         case "input":
           return (
@@ -239,7 +239,7 @@ export default function CastingAI() {
                 </button>
                 <button
                   onClick={() => setCurrentStep("details")}
-                  className="px-4 py-2  text-secondary bg-primary rounded-lg hover:bg-amber-700"
+                  className="px-4 py-2 text-secondary bg-primary rounded-lg hover:bg-amber-700"
                 >
                   Continue
                 </button>
@@ -262,13 +262,11 @@ export default function CastingAI() {
                   )}
   
                   {/* Input fields positioned over the image */}
-                  <div className="absolute top-1/2 left-1/2 w-[90%] transform -translate-x-1/2 -translate-y-1/2 p-4 flex flex-col items-center space-y-4  rounded-lg shadow-lg">
-                  
-  
+                  <div className="absolute top-1/2 left-1/2 w-[90%] transform -translate-x-1/2 -translate-y-1/2 p-4 flex flex-col items-center space-y-4 rounded-lg shadow-lg">
                     <CustomMonkInput
                       type="text"
                       placeholder="Enter Monk Name"
-                      className="w-[80%] rounded-lg !text-[#D6C5AC] !font-secondary px-4 py-3  text-center"
+                      className="w-[80%] rounded-lg !text-[#D6C5AC] !font-secondary px-4 py-3 text-center"
                       value={characterName}
                       onChange={(e) => setCharacterName(e.target.value)}
                     />
@@ -277,12 +275,8 @@ export default function CastingAI() {
                       onClick={generateCharacter}
                       disabled={loading.generating}
                       className="px-8 py-4 w-full max-w-[300px] font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                      text={
-                        loading.generating
-                          ? "Generating..."
-                          : "Create Lore"
-                      }
-                      textClassName=" font-secondary text-[#D6C5AC] whitespace-nowrap"
+                      text={loading.generating ? "Generating..." : "Create Lore"}
+                      textClassName="font-secondary text-[#D6C5AC] whitespace-nowrap"
                     />
                   </div>
                 </div>
@@ -303,26 +297,40 @@ export default function CastingAI() {
         case "breakdown":
           return (
             <div className="space-y-6">
-              {CharacterPage(breakdown,upscaledImage!)}
-              <div className="flex justify-center">
+              {CharacterPage(breakdown, upscaledImage!)}
+  
+              <div className="flex justify-center gap-4">
                 <button
                   onClick={handleBack}
                   className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600"
                 >
                   Back
                 </button>
+  
+                <a
+                  href={`/studio?lore=${encodeURIComponent(breakdown || "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600"
+                >
+                  🎶 To the Studio
+                </a>
               </div>
             </div>
           );
-      }
-    }
-  };
-
+  
+        default:
+          return null;
+      } // <- closes switch
+    } // <- closes else
+  }; // <- closes renderContent
+  
+  // Main return
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-white px-4 py-10 ">
+    <div className="min-h-screen flex flex-col items-center justify-center text-white px-4 py-10">
       {/* Custom Navbar */}
       <MonksCastingNavbar />
-
+  
       {/* Status Message */}
       {status.message && (
         <div
@@ -335,8 +343,7 @@ export default function CastingAI() {
           {status.message}
         </div>
       )}
-    
-
+  
       {renderContent()}
     </div>
   );

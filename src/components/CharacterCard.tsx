@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-// components/CharacterCard.jsx
 import React from "react";
 
 interface CharacterData {
@@ -12,7 +11,6 @@ interface CharacterData {
     karma: string;
     grit: string;
     mantraPower: string;
-
     signatureRelic: string;
   };
   karmaValue: number;
@@ -23,7 +21,6 @@ interface CharacterData {
 const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
   characterData,
 }) => {
-  // Fallback character data if props are not provided
   const defaultCharacter = {
     name: "Frost Sage",
     score: "",
@@ -34,19 +31,15 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
       karma: "Zen",
       grit: "Legendary",
       mantraPower: "White Frost Projection",
-
       signatureRelic: "Snowflake medallion",
     },
-    // For rendering dots
     karmaValue: 3,
     gritValue: 3,
     mantraValue: 5,
   };
 
-  // Use provided data or fallback to defaults
   const character = characterData || defaultCharacter;
 
-  // Render dot indicators based on value (1-5)
   const renderDots = (value: number, max = 5) => {
     return Array.from({ length: max }).map((_, index) => (
       <div
@@ -66,7 +59,7 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
           "conic-gradient(from 180deg at 50% 50%, #B18A42 0deg, #9A7904 16.88deg, #DCA310 88.12deg, #9A7904 151.87deg, #9A7904 225deg, #9A7904 288.75deg, #B18A42 360deg)",
       }}
     >
-      {/* Header with name and score */}
+      {/* Header */}
       <div className="flex justify-between items-center px-3 pt-2 pb-1">
         <h2 className="text-lg font-serif text-black">{character.name}</h2>
         <div className="flex items-center space-x-1">
@@ -89,8 +82,8 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
           </div>
         </div>
       </div>
-  
-      {/* Character image */}
+
+      {/* Character Image */}
       <div className="mx-3 my-1">
         <div className="p-1 bg-gradient-to-br from-amber-300 to-amber-400 border-2 border-amber-300">
           <div className="bg-gradient-to-br from-amber-200 to-amber-400 p-1">
@@ -109,7 +102,7 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
           </div>
         </div>
       </div>
-  
+
       {/* Hustle Skill */}
       <div
         className="mx-3 my-1 py-1 px-2 rounded-tl-3xl rounded-br-3xl"
@@ -127,11 +120,11 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
           Hustle: {character.statCard?.hustleSkill || "Shady"}
         </h3>
       </div>
-  
-      {/* Stats */}
+
+      {/* Stats Section */}
       <div className="px-3 space-y-4 pb-3 bg-[#1b140a] bg-opacity-90 rounded-b-3xl shadow-inner">
-  
-        {/* Alignment (Karma) */}
+
+        {/* Alignment */}
         <div className="space-y-1">
           <div className="flex justify-between items-center">
             <h3 className="text-sm font-serif text-amber-200">Alignment</h3>
@@ -144,8 +137,8 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
           </div>
           <hr className="border-[#333] my-1" />
         </div>
-  
-        {/* Resilience (Grit) */}
+
+        {/* Resilience */}
         <div className="space-y-1">
           <div className="flex justify-between items-center">
             <h3 className="text-sm font-serif text-amber-200">Resilience</h3>
@@ -158,8 +151,8 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
           </div>
           <hr className="border-[#333] my-1" />
         </div>
-  
-        {/* Essence (Mantra) */}
+
+        {/* Essence */}
         <div className="space-y-1">
           <div className="flex justify-between items-center">
             <h3 className="text-sm font-serif text-amber-200">Essence</h3>
@@ -171,8 +164,8 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
             {renderDots(character.mantraValue || 5)}
           </div>
         </div>
-  
-        {/* Signature Move + Relic */}
+
+        {/* Signature Move & Relic */}
         <div className="p-3 mt-3 rounded-lg text-[10px] leading-snug bg-[#2c1d0f] border border-[#8b734b]">
           <p className="text-white mb-1">
             <span className="font-semibold text-amber-300">Move:</span>{" "}
@@ -187,4 +180,6 @@ const CharacterCard: React.FC<{ characterData?: CharacterData }> = ({
       </div>
     </div>
   );
-  }
+};
+
+export default CharacterCard;
