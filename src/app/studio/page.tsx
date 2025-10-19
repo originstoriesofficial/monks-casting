@@ -34,11 +34,10 @@ const StudioPage = () => {
         lyrics ? 'Lyrics: ' + lyrics : ''
       }`;
 
-      const response = await fetch('https://api.elevenlabs.io/v1/music', {
+      const res = await fetch('/api/compose', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xi-api-key': process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY || '',
         },
         body: JSON.stringify({
           prompt: fullPrompt,
@@ -47,19 +46,17 @@ const StudioPage = () => {
         }),
       });
 
-      if (!response.ok) {
-        const errBody = await response.json();
-        throw new Error(errBody?.detail?.message || 'Failed to generate track');
-      }
-
-      const blob = await response.blob();
+      if (!res.ok) throw new Error('Failed to generate song');
+      const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       setAudioUrl(url);
-    } catch (err: any) {
-      console.error('Error generating music:', err);
-      setError('Something went wrong while generating music.');
-    } finally {
-      setLoading(false);
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error('Error generating music:', err.message);
+          setError('Something went wrong while generating music.');
+        } else {
+          setError('Unknown error occurred.');
+        }
     }
   };
 
@@ -111,6 +108,14 @@ const StudioPage = () => {
         <div className="mt-6">
           <h2 className="text-xl mb-2">Preview</h2>
           <audio controls src={audioUrl} className="w-full" />
+
+          <a
+            href={audioUrl}
+            download={`monk-song-${Date.now()}.mp3`}
+            className="mt-2 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
+          >
+            ⬇️ Download Song
+          </a>
         </div>
       )}
     </div>
