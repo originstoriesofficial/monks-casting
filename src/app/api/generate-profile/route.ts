@@ -64,46 +64,56 @@ interface CharacterResponse {
 
 // Updated system prompt with more explicit formatting instructions
 const SYSTEM_MESSAGE = `
-You are creating a character for the "Mantle Monks" TV series that blends monastery culture with modern tech.
-Generate a character profile using the provided blockchain and vision attributes.
+You are generating a character for **"Mønkks"** — an animated show set in a mystical monastery that’s been forced to pay rent after a timeline split. Think: Xavier’s School meets Kung Fu monks meets absurdist sitcom.
 
-## FORMAT YOUR RESPONSE EXACTLY AS FOLLOWS:
+The monastery is home to 350 monks from all over the world, each with unique vibes, skills, flaws, and philosophies. The series blends Eastern wisdom, meme culture, and absurd comedy with musical numbers and found footage from the real world.
+
+Use the blockchain traits and vision input to create a **distinct character** with personality, purpose, and flavor — not just a stat sheet.
+
+---
+
+### 🎭 FORMAT (Valid JSON inside a code block)
 
 \`\`\`json
 {
   "name": "{name}",
-  "roleType": "Sidekick / Hero / Anti-hero / Mentor / Villain / NPC",
-  "signatureMove": "A distinctive action this character is known for",
-  "catchphrase": "A memorable one-liner that captures their essence",
+  "roleType": "Hero / Sidekick / Mentor / Villain / NPC / Wildcard",
+  "signatureMove": "A signature action, move, or quote-worthy behavior (funny, philosophical, or weird)",
+  "catchphrase": "A line this monk repeats often — can be ironic, poetic, or spiritual",
   "hp": {hp},
   "statCard": {
-    "karma": "Zen / Hustler / Chaos",
-    "grit": "High / Low / Medium / Undetectable / Iconic / Legendary / Fleeting",
-    "mantraPower": "Energy-Infused Ability",
-    "hustleSkill": "Street / Dynasty / White Collar / Shady / Red Tape / etc",
-    "signatureRelic": "What they are holding in their hand"
+    "karma": "Zen / Hustler / Agent of Chaos / Balanced / Blissed Out / Burnt Out",
+    "grit": "Fleeting / Solid / Legendary / Measured / Iconic / Scatterbrained",
+    "mantraPower": "Use the {color} energy and the {animal} spirit to describe a mystical or emotional ability",
+    "hustleSkill": "Cooking / Singing / Scamming / Meditating / Inventing / Podcasting / App Building / Code / Gardening / etc",
+    "signatureRelic": "A symbolic item they carry — can be odd, magical, or mundane"
   },
   "strengths": [
-    "Blockchain wizardry",
-    "Tech-savvy expertise",
-    "Another strength"
+    "Emotional resilience",
+    "Singing under pressure",
+    "Tech tinkering"
   ],
   "weaknesses": [
-    "Impatience",
-    "Risky schemes",
-    "Another weakness"
+    "Capitalist delusion",
+    "Fear of stillness",
+    "Imposter syndrome"
   ]
 }
 \`\`\`
 
-IMPORTANT: 
-- strengths ,weaknesses should be array of 3 elements and each elements should be of 1-2 words only 
-- For mantraPower, combine the energy of the color {color} with the spirit of the animal {animal} to create a unique ability
-- Each stat in the statCard should have exactly one value, not multiple options
-- Be witty, irreverent, sarcastic and dry to match the tone of the series
-- The character's HP is {hp} and must be included exactly as provided
-- Focus on tech/crypto/blockchain themes in their strengths and weaknesses
-- Create signature moves and catchphrases that reflect their tech monk identity
+---
+
+### 🧠 Lore Guidelines
+
+- The characters don’t need to **know** blockchain — they’re just reacting to the world.
+- Some monks are old-world, some are overly online.
+- Many are trying to make rent by pitching projects (e.g., “Only Hands”, AI meditation app, k-pop side gigs).
+- Strengths/Weaknesses should be more **human** or **thematic** — not crypto jargon.
+- Signature Moves can be **musical**, **found footage-inspired**, **food-related**, or **bizarrely powerful**.
+
+---
+
+Think like a show writer, not a stat generator. These are monks with personalities, contradictions, and secret pasts — ready for a food fight, a TED Talk, or a talent show.
 `;
 
 // Function to fetch token metadata from Mantle blockchain
@@ -280,7 +290,7 @@ export async function POST(request: NextRequest) {
     // Generate character using FAL AI
     const result = await fal.subscribe("fal-ai/any-llm", {
       input: {
-        model: "google/gemini-flash-1.5",
+        model: "google/gemini-flash-2.5",
         system_prompt: dynamicSystemMessage,
         prompt: JSON.stringify({
           visionAttributes: body.visionAttributes,

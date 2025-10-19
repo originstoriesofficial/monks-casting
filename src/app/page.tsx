@@ -280,7 +280,7 @@ export default function CastingAI() {
                       text={
                         loading.generating
                           ? "Generating..."
-                          : "Generate Breakdown"
+                          : "Create Lore"
                       }
                       textClassName=" font-secondary text-[#D6C5AC] whitespace-nowrap"
                     />

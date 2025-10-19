@@ -50,7 +50,7 @@ const MonksCastingStudio: React.FC<MonksCastingStudioProps> = ({
       break;
     
     case 'image':
-      title = "Enhanced MØNK";
+      title = "Leveled-Up MØNK";
       content = upscaledImage ? (
         <div className="w-full h-full flex items-center justify-center">
           <img
@@ -63,7 +63,7 @@ const MonksCastingStudio: React.FC<MonksCastingStudioProps> = ({
       break;
     
     case 'details':
-        title = "Enhanced MØNK";
+        title = "Leveled-Up MØNK";
         content = children;
             break;
     case 'breakdown':
