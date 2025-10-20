@@ -73,7 +73,7 @@ const StudioClient = () => {
     }
   };
 
-  // ✅ JSX correctly closed and balanced
+  // ✅ Clean, balanced JSX return
   return (
     <div className="text-amber-100 min-h-screen p-6 font-secondary bg-black">
       <div className="max-w-5xl mx-auto grid grid-cols-1 gap-6 text-center">
