@@ -1,11 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Stats from '@/components/Stats';
 import CustomDiv from '@/components/CustomDiv';
 
-// 🎵 Available music styles
 const styles = [
   'Electronic', 'Hip-Hop', 'Trap', 'Lo-fi', 'Jazz', 'Ambient', 'Synthwave',
   'Orchestral', 'Fantasy', 'Cyberpunk', 'Retro', 'Rock', 'Funk', 'Drill',
@@ -16,11 +14,13 @@ const styles = [
   'Vaporwave', 'Bossa Nova', 'Trance',
 ];
 
-const StudioClient = () => {
-  const searchParams = useSearchParams();
-  const defaultLore = searchParams.get('lore') || '';
-
-  const [prompt, setPrompt] = useState(defaultLore);
+export default function StudioClient({
+  prompt,
+  setPrompt,
+}: {
+  prompt: string;
+  setPrompt: (value: string) => void;
+}) {
   const [lyrics, setLyrics] = useState('');
   const [style, setStyle] = useState(styles[0]);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -33,7 +33,9 @@ const StudioClient = () => {
     setAudioUrl(null);
 
     try {
-      const fullPrompt = `${prompt} in the style of ${style}. ${lyrics ? 'Lyrics: ' + lyrics : ''}`;
+      const fullPrompt = `${prompt} in the style of ${style}. ${
+        lyrics ? 'Lyrics: ' + lyrics : ''
+      }`;
 
       const res = await fetch('/api/compose', {
         method: 'POST',
@@ -64,9 +66,7 @@ const StudioClient = () => {
       <Stats>
         <div className="relative border-4 border-[#bfa36f] rounded-lg p-8 w-full max-w-3xl bg-black/70">
           {/* Lore Prompt */}
-          <label className="block text-sm text-amber-200 text-left">
-            Lore Prompt
-          </label>
+          <label className="block text-sm text-amber-200 text-left">Lore Prompt</label>
           <textarea
             className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
             rows={4}
@@ -74,11 +74,9 @@ const StudioClient = () => {
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Describe your monk's legend or story..."
           />
-  
+
           {/* Lyrics Input */}
-          <label className="block text-sm text-amber-200 text-left mt-4">
-            Optional Lyrics
-          </label>
+          <label className="block text-sm text-amber-200 text-left mt-4">Optional Lyrics</label>
           <textarea
             className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
             rows={2}
@@ -86,11 +84,9 @@ const StudioClient = () => {
             onChange={(e) => setLyrics(e.target.value)}
             placeholder="Add lyrics if you'd like..."
           />
-  
+
           {/* Style Picker */}
-          <label className="block text-sm text-amber-200 text-left mt-4">
-            Music Style
-          </label>
+          <label className="block text-sm text-amber-200 text-left mt-4">Music Style</label>
           <select
             className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
             value={style}
@@ -102,7 +98,7 @@ const StudioClient = () => {
               </option>
             ))}
           </select>
-  
+
           {/* Generate Button */}
           <button
             onClick={generateSong}
@@ -111,10 +107,10 @@ const StudioClient = () => {
           >
             {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
           </button>
-  
+
           {/* Error */}
           {error && <p className="text-red-400 mt-3">{error}</p>}
-  
+
           {/* Preview */}
           {audioUrl && (
             <div className="mt-6 text-center">
@@ -132,7 +128,5 @@ const StudioClient = () => {
         </div>
       </Stats>
     </div>
-  ); 
+  );
 }
-// ✅ Default export required for import to work
-export default StudioClient;

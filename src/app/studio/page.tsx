@@ -1,11 +1,12 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import InspirationSelector from '@/components/InspirationSelector';
 import StudioClient from '@/components/StudioClient';
 
-
 export default function StudioPage() {
+  const [prompt, setPrompt] = useState('');
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-black text-[#e3d7b6] p-8">
       <div className="w-full max-w-3xl mx-auto flex flex-col items-center space-y-8">
@@ -19,19 +20,18 @@ export default function StudioPage() {
           </p>
         </div>
 
-        {/* Inspiration Box (only one, clean) */}
+        {/* Inspiration Box */}
         <div className="relative border-4 border-[#bfa36f] rounded-lg p-8 w-full bg-black/70">
           <Suspense fallback={<div>Loading inspiration...</div>}>
-            <InspirationSelector />
+            <InspirationSelector setPrompt={setPrompt} />
           </Suspense>
         </div>
 
-        {/* StudioClient below */}
+        {/* Studio Client */}
         <Suspense fallback={<div>Loading studio tools...</div>}>
-          <StudioClient />
+          <StudioClient prompt={prompt} setPrompt={setPrompt} />
         </Suspense>
       </div>
     </main>
   );
 }
-

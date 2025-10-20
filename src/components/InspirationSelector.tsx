@@ -34,7 +34,7 @@ const INSPIRATIONS: string[] = [
   'Holographic monks forming constellations of faith',
 ];
 
-export default function InspirationSelector() {
+export default function InspirationSelector({ setPrompt }: { setPrompt: (value: string) => void }) {
   const [currentSet, setCurrentSet] = useState<string[]>([]);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function InspirationSelector() {
           <button
             key={i}
             type="button"
-            onClick={rotateInspirations}
+            onClick={() => setPrompt(inspiration)}
             className="
               bg-[#1c1f26] text-[#e3d7b6]
               px-5 py-3 rounded-md
