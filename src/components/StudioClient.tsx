@@ -60,11 +60,13 @@ const StudioClient = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex justify-center">
       <Stats>
-        <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
+        <div className="relative border-4 border-[#bfa36f] rounded-lg p-8 w-full max-w-3xl bg-black/70">
           {/* Lore Prompt */}
-          <label className="block text-sm text-amber-200 text-left">Lore Prompt</label>
+          <label className="block text-sm text-amber-200 text-left">
+            Lore Prompt
+          </label>
           <textarea
             className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
             rows={4}
@@ -72,9 +74,11 @@ const StudioClient = () => {
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Describe your monk's legend or story..."
           />
-
-          {/* Optional Lyrics */}
-          <label className="block text-sm text-amber-200 text-left">Optional Lyrics</label>
+  
+          {/* Lyrics Input */}
+          <label className="block text-sm text-amber-200 text-left mt-4">
+            Optional Lyrics
+          </label>
           <textarea
             className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
             rows={2}
@@ -82,32 +86,36 @@ const StudioClient = () => {
             onChange={(e) => setLyrics(e.target.value)}
             placeholder="Add lyrics if you'd like..."
           />
-
-          {/* Music Style */}
-          <label className="block text-sm text-amber-200 text-left">Music Style</label>
+  
+          {/* Style Picker */}
+          <label className="block text-sm text-amber-200 text-left mt-4">
+            Music Style
+          </label>
           <select
             className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
             value={style}
             onChange={(e) => setStyle(e.target.value)}
           >
             {styles.map((s) => (
-              <option key={s} value={s}>{s}</option>
+              <option key={s} value={s}>
+                {s}
+              </option>
             ))}
           </select>
-
+  
           {/* Generate Button */}
           <button
             onClick={generateSong}
             disabled={loading || !prompt}
-            className="mt-4 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded transition disabled:opacity-50"
+            className="mt-6 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded transition disabled:opacity-50"
           >
             {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
           </button>
-
+  
           {/* Error */}
           {error && <p className="text-red-400 mt-3">{error}</p>}
-
-          {/* Audio Preview */}
+  
+          {/* Preview */}
           {audioUrl && (
             <div className="mt-6 text-center">
               <CustomDiv text="Preview" className="mx-auto mb-3" />
@@ -124,8 +132,7 @@ const StudioClient = () => {
         </div>
       </Stats>
     </div>
-  );
-};
-
+  ); 
+}
 // ✅ Default export required for import to work
 export default StudioClient;
