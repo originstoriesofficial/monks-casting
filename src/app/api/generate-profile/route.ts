@@ -290,7 +290,7 @@ export async function POST(request: NextRequest) {
     // Generate character using FAL AI
     const result = await fal.subscribe("fal-ai/any-llm", {
       input: {
-        model: "google/gemini-flash-2.5",
+        model: "anthropic/claude-3.7-sonnet",
         system_prompt: dynamicSystemMessage,
         prompt: JSON.stringify({
           visionAttributes: body.visionAttributes,

@@ -344,6 +344,18 @@ export default function CastingAI() {
         </div>
       )}
   
+      {/* 🎵 Add This Button */}
+      {isConnected && (
+        <div className="mb-6">
+          <a
+            href="/studio"
+            className="inline-block px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition"
+          >
+            🎵 To Playground
+          </a>
+        </div>
+      )}
+  
       {renderContent()}
     </div>
   );
