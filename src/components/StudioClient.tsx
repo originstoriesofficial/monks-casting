@@ -13,7 +13,7 @@ const styles = [
   'Epic', 'Darkwave', 'R&B', 'Chillwave', 'Glitch', 'Punk', 'EDM', 'Metal',
   'Reggaeton', 'Acoustic', 'Minimal', 'Experimental', 'Dream Pop', 'Gospel',
   'Neo Soul', 'Boom Bap', 'Future Bass', 'Trap Soul', 'Post-Rock', 'Shoegaze',
-  'Vaporwave', 'Bossa Nova', 'Trance'
+  'Vaporwave', 'Bossa Nova', 'Trance',
 ];
 
 // ✨ Optional preset ideas
@@ -58,7 +58,7 @@ const StudioClient = () => {
 
       if (!res.ok) throw new Error('Failed to generate song');
 
-      // Optional delay for UX
+      // short UX delay
       await new Promise((r) => setTimeout(r, 1500));
 
       const blob = await res.blob();
@@ -73,7 +73,7 @@ const StudioClient = () => {
     }
   };
 
-  // ✅ Clean JSX structure (no stray tags)
+  // ✅ JSX correctly closed and balanced
   return (
     <div className="text-amber-100 min-h-screen p-6 font-secondary bg-black">
       <div className="max-w-5xl mx-auto grid grid-cols-1 gap-6 text-center">
@@ -96,7 +96,10 @@ const StudioClient = () => {
             {/* Inspirations */}
             {!defaultLore && (
               <div className="mb-4 text-center">
-                <CustomDiv text="Choose an Inspiration" className="text-center mb-3 mx-auto" />
+                <CustomDiv
+                  text="Choose an Inspiration"
+                  className="text-center mb-3 mx-auto"
+                />
                 <div className="flex flex-wrap justify-center gap-2">
                   {presetLores.map((idea) => (
                     <button
@@ -112,7 +115,9 @@ const StudioClient = () => {
             )}
 
             {/* Lore Prompt */}
-            <label className="block text-sm text-amber-200 text-left">Lore Prompt</label>
+            <label className="block text-sm text-amber-200 text-left">
+              Lore Prompt
+            </label>
             <textarea
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
               rows={4}
@@ -122,7 +127,9 @@ const StudioClient = () => {
             />
 
             {/* Optional Lyrics */}
-            <label className="block text-sm text-amber-200 text-left">Optional Lyrics</label>
+            <label className="block text-sm text-amber-200 text-left">
+              Optional Lyrics
+            </label>
             <textarea
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
               rows={2}
@@ -132,7 +139,9 @@ const StudioClient = () => {
             />
 
             {/* Music Style */}
-            <label className="block text-sm text-amber-200 text-left">Music Style</label>
+            <label className="block text-sm text-amber-200 text-left">
+              Music Style
+            </label>
             <select
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
               value={style}
