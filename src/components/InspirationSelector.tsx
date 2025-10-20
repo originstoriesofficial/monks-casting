@@ -1,179 +1,97 @@
 'use client';
+import React, { useState, useEffect } from 'react';
 
-import React, { useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Stats from '@/components/Stats';
-import CustomDiv from '@/components/CustomDiv';
-
-// 🎵 Available music styles
-const styles = [
-  'Electronic', 'Hip-Hop', 'Trap', 'Lo-fi', 'Jazz', 'Ambient', 'Synthwave',
-  'Orchestral', 'Fantasy', 'Cyberpunk', 'Retro', 'Rock', 'Funk', 'Drill',
-  'Dubstep', 'Techno', 'Industrial', 'Afrobeats', 'Pop', 'Ballad', 'Hardstyle',
-  'Epic', 'Darkwave', 'R&B', 'Chillwave', 'Glitch', 'Punk', 'EDM', 'Metal',
-  'Reggaeton', 'Acoustic', 'Minimal', 'Experimental', 'Dream Pop', 'Gospel',
-  'Neo Soul', 'Boom Bap', 'Future Bass', 'Trap Soul', 'Post-Rock', 'Shoegaze',
-  'Vaporwave', 'Bossa Nova', 'Trance'
-];
-
-// 🪶 Default quick inspiration presets
-const presetLores = [
+const INSPIRATIONS: string[] = [
   'An ancient monk chanting in a futuristic temple',
   'Cyberpunk monks meditating in a neon cityscape',
   'A ritual of light and shadow deep in the forest',
   'Celestial beings singing in a digital cathedral',
   'Battle hymn of a wandering monk-warrior',
+  'Dreaming monks surrounded by bioluminescent lotuses',
+  'A lone monk recording prophecies on holographic scrolls',
+  'Sacred drums echoing in zero gravity',
+  'Digital incense rising from crystal circuits',
+  'Meditations inside a glass pyramid on Mars',
+  'Voices of monks blending with alien harmonics',
+  'A cosmic prayer carried by solar winds',
+  'Ancient bells ringing through quantum dimensions',
+  'Hooded monks guarding the library of forgotten code',
+  'A monk orchestra channeling divine frequency',
+  'Echoes of enlightenment across metallic mountains',
+  'Ceremonial dance in a fractal monastery',
+  'Oceanic chants from beneath the waves',
+  'Stone monks awakening as living statues',
+  'Etheric monks weaving light into melodies',
+  'A parallel monastery at the edge of a black hole',
+  'Spirit monks whispering through digital rain',
+  'A luminous meditation inside a data temple',
+  'Mechanical monks performing sacred code',
+  'The awakening of the first digital monk',
+  'A tranquil chant beneath floating monasteries',
+  'Voices of monks dissolving into starlight',
+  'Mystic resonance within the infinite void',
+  'Prayers encrypted in shimmering sound waves',
+  'Holographic monks forming constellations of faith',
 ];
 
-const StudioClient = () => {
-  const searchParams = useSearchParams();
-  const defaultLore = searchParams.get('lore') || '';
+export default function InspirationSelector() {
+  const [currentSet, setCurrentSet] = useState<string[]>([]);
 
-  const [prompt, setPrompt] = useState(defaultLore);
-  const [lyrics, setLyrics] = useState('');
-  const [style, setStyle] = useState(styles[0]);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    rotateInspirations();
+    const id = setInterval(rotateInspirations, 15000);
+    return () => clearInterval(id);
+  }, []);
 
-  const generateSong = async () => {
-    setLoading(true);
-    setError(null);
-    setAudioUrl(null);
-
-    try {
-      const fullPrompt = `${prompt} in the style of ${style}. ${
-        lyrics ? 'Lyrics: ' + lyrics : ''
-      }`;
-
-      const res = await fetch('/api/compose', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: fullPrompt,
-          music_length_ms: 60000,
-          output_format: 'mp3_44100_128',
-        }),
-      });
-
-      if (!res.ok) throw new Error('Failed to generate song');
-
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      setAudioUrl(url);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error('Error generating music:', err.message);
-        setError('Something went wrong while generating music.');
-      } else {
-        setError('Unknown error occurred.');
-      }
-    } finally {
-      setLoading(false);
-    }
+  const rotateInspirations = (): void => {
+    const shuffled = [...INSPIRATIONS].sort(() => 0.5 - Math.random());
+    setCurrentSet(shuffled.slice(0, 5));
   };
 
   return (
-    <div className="text-amber-100 min-h-screen p-6 font-secondary bg-black">
-      <div className="max-w-5xl mx-auto grid grid-cols-1 gap-6">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-amber-200 mb-4">
-            🎧 Create Your Own MØNK Anthem
-          </h1>
-          <p className="text-sm md:text-base text-amber-300/80">
-            Transform your lore into sound.
-          </p>
-          <p className="text-xs md:text-sm text-amber-400 mt-2">
-            Choose an inspiration or write your own lore prompt below.
-          </p>
-        </div>
+    <div
+      className="
+        flex flex-col items-center justify-center
+        w-full h-full min-h-[320px]
+        px-6 py-8
+        bg-black/60 rounded-lg
+        border border-[#bfa36f]/40
+        shadow-[0_0_30px_rgba(191,163,111,0.15)]
+        overflow-hidden
+      "
+    >
+      <h2 className="text-xl font-semibold mb-6 text-center text-[#e3d7b6] tracking-wide">
+        Choose an Inspiration
+      </h2>
 
-        <Stats>
-          <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
-            {/* Inspiration Buttons */}
-            {!defaultLore && (
-              <div className="mb-4 text-center">
-                <CustomDiv text="Choose an Inspiration" className="text-center mb-3 mx-auto" />
-                <div className="flex flex-wrap justify-center gap-2">
-                  {presetLores.map((idea) => (
-                    <button
-                      key={idea}
-                      onClick={() => setPrompt(idea)}
-                      className="px-3 py-2 bg-gray-800 rounded text-xs hover:bg-gray-700 transition"
-                    >
-                      {idea}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Lore Prompt Input */}
-            <label className="block text-sm text-amber-200">Lore Prompt</label>
-            <textarea
-              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
-              rows={4}
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Describe your monk's legend or story..."
-            />
-
-            {/* Lyrics Input */}
-            <label className="block text-sm text-amber-200">Optional Lyrics</label>
-            <textarea
-              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
-              rows={2}
-              value={lyrics}
-              onChange={(e) => setLyrics(e.target.value)}
-              placeholder="Add lyrics if you'd like..."
-            />
-
-            {/* Music Style Selector */}
-            <label className="block text-sm text-amber-200">Music Style</label>
-            <select
-              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
-              value={style}
-              onChange={(e) => setStyle(e.target.value)}
-            >
-              {styles.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-
-            {/* Generate Button */}
-            <button
-              onClick={generateSong}
-              disabled={loading || !prompt}
-              className="mt-4 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded transition disabled:opacity-50"
-            >
-              {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
-            </button>
-
-            {/* Error Message */}
-            {error && <p className="text-red-400 mt-3">{error}</p>}
-
-            {/* Audio Player */}
-            {audioUrl && (
-              <div className="mt-6 text-center">
-                <CustomDiv text="Preview" className="mx-auto mb-3" />
-                <audio controls src={audioUrl} className="w-full rounded-lg" />
-                <a
-                  href={audioUrl}
-                  download={`monk-anthem-${Date.now()}.mp3`}
-                  className="mt-3 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 transition"
-                >
-                  ⬇️ Download Anthem
-                </a>
-              </div>
-            )}
-          </div>
-        </Stats>
+      <div className="flex flex-col items-center justify-center gap-3 w-full">
+        {currentSet.map((inspiration, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={rotateInspirations}
+            className="
+              bg-[#1c1f26] text-[#e3d7b6]
+              px-5 py-3 rounded-md
+              whitespace-normal text-center leading-snug
+              max-w-[90%] md:max-w-[80%]
+              hover:bg-[#3a3e47] transition-all duration-300
+            "
+          >
+            {inspiration}
+          </button>
+        ))}
       </div>
+
+      <button
+        onClick={rotateInspirations}
+        className="
+          mt-6 text-sm text-[#bfa36f]
+          hover:text-[#e3d7b6] transition-colors
+        "
+      >
+        🔁 Shuffle Inspirations
+      </button>
     </div>
   );
-};
-
-export default StudioClient;
+}
