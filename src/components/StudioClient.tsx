@@ -78,15 +78,18 @@ const StudioClient = () => {
             🎧 Create Your Own MØNK Anthem
           </h1>
           <p className="text-sm md:text-base text-amber-300/80">
-            Transform your lore into sound — powered by ElevenLabs.
+            Transform your lore into sound.
+          </p>
+          <p className="text-xs md:text-sm text-amber-400 mt-2">
+            Choose an inspiration or write your own lore prompt below.
           </p>
         </div>
-
+  
         <Stats>
           <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
             {!defaultLore && (
-              <div className="mb-4">
-                <CustomDiv text="Choose an Inspiration" className="text-center mb-3" />
+              <div className="mb-4 text-center">
+                <CustomDiv text="Choose an Inspiration" className="text-center mb-3 mx-auto" />
                 <div className="flex flex-wrap justify-center gap-2">
                   {presetLores.map((idea) => (
                     <button
@@ -100,7 +103,7 @@ const StudioClient = () => {
                 </div>
               </div>
             )}
-
+  
             <label className="block text-sm text-amber-200">Lore Prompt</label>
             <textarea
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
@@ -109,7 +112,7 @@ const StudioClient = () => {
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Describe your monk's legend or story..."
             />
-
+  
             <label className="block text-sm text-amber-200">Optional Lyrics</label>
             <textarea
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
@@ -118,7 +121,7 @@ const StudioClient = () => {
               onChange={(e) => setLyrics(e.target.value)}
               placeholder="Add lyrics if you'd like..."
             />
-
+  
             <label className="block text-sm text-amber-200">Music Style</label>
             <select
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
@@ -131,7 +134,7 @@ const StudioClient = () => {
                 </option>
               ))}
             </select>
-
+  
             <button
               onClick={generateSong}
               disabled={loading || !prompt}
@@ -139,9 +142,9 @@ const StudioClient = () => {
             >
               {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
             </button>
-
+  
             {error && <p className="text-red-400 mt-3">{error}</p>}
-
+  
             {audioUrl && (
               <div className="mt-6 text-center">
                 <CustomDiv text="Preview" className="mx-auto mb-3" />
@@ -160,6 +163,6 @@ const StudioClient = () => {
       </div>
     </div>
   );
-};
-
+}
+  
 export default StudioClient;
