@@ -4,6 +4,7 @@ import React, { Suspense } from 'react';
 import InspirationSelector from '@/components/InspirationSelector';
 import StudioClient from '@/components/StudioClient';
 
+
 export default function StudioPage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-black text-[#e3d7b6] p-8">
@@ -33,3 +34,4 @@ export default function StudioPage() {
     </main>
   );
 }
+

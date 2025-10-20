@@ -16,15 +16,6 @@ const styles = [
   'Vaporwave', 'Bossa Nova', 'Trance',
 ];
 
-// ✨ Optional preset ideas
-const presetLores = [
-  'An ancient monk chanting in a futuristic temple',
-  'Cyberpunk monks meditating in a neon cityscape',
-  'A ritual of light and shadow deep in the forest',
-  'Celestial beings singing in a digital cathedral',
-  'Battle hymn of a wandering monk-warrior',
-];
-
 const StudioClient = () => {
   const searchParams = useSearchParams();
   const defaultLore = searchParams.get('lore') || '';
@@ -42,9 +33,7 @@ const StudioClient = () => {
     setAudioUrl(null);
 
     try {
-      const fullPrompt = `${prompt} in the style of ${style}. ${
-        lyrics ? 'Lyrics: ' + lyrics : ''
-      }`;
+      const fullPrompt = `${prompt} in the style of ${style}. ${lyrics ? 'Lyrics: ' + lyrics : ''}`;
 
       const res = await fetch('/api/compose', {
         method: 'POST',
@@ -58,9 +47,6 @@ const StudioClient = () => {
 
       if (!res.ok) throw new Error('Failed to generate song');
 
-      // short UX delay
-      await new Promise((r) => setTimeout(r, 1500));
-
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       setAudioUrl(url);
@@ -73,118 +59,73 @@ const StudioClient = () => {
     }
   };
 
-  // ✅ Clean, balanced JSX return
   return (
-    <div className="text-amber-100 min-h-screen p-6 font-secondary bg-black">
-      <div className="max-w-5xl mx-auto grid grid-cols-1 gap-6 text-center">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-amber-200 mb-4">
-            🎧 Create Your Own MØNK Anthem
-          </h1>
-          <p className="text-sm md:text-base text-amber-300/80">
-            Transform your lore into sound.
-          </p>
-          <p className="text-xs md:text-sm text-amber-400 mt-2">
-            Choose an inspiration or write your own lore prompt below.
-          </p>
+    <div className="w-full">
+      <Stats>
+        <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
+          {/* Lore Prompt */}
+          <label className="block text-sm text-amber-200 text-left">Lore Prompt</label>
+          <textarea
+            className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
+            rows={4}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="Describe your monk's legend or story..."
+          />
+
+          {/* Optional Lyrics */}
+          <label className="block text-sm text-amber-200 text-left">Optional Lyrics</label>
+          <textarea
+            className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
+            rows={2}
+            value={lyrics}
+            onChange={(e) => setLyrics(e.target.value)}
+            placeholder="Add lyrics if you'd like..."
+          />
+
+          {/* Music Style */}
+          <label className="block text-sm text-amber-200 text-left">Music Style</label>
+          <select
+            className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
+            value={style}
+            onChange={(e) => setStyle(e.target.value)}
+          >
+            {styles.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+
+          {/* Generate Button */}
+          <button
+            onClick={generateSong}
+            disabled={loading || !prompt}
+            className="mt-4 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded transition disabled:opacity-50"
+          >
+            {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
+          </button>
+
+          {/* Error */}
+          {error && <p className="text-red-400 mt-3">{error}</p>}
+
+          {/* Audio Preview */}
+          {audioUrl && (
+            <div className="mt-6 text-center">
+              <CustomDiv text="Preview" className="mx-auto mb-3" />
+              <audio controls src={audioUrl} className="w-full rounded-lg" />
+              <a
+                href={audioUrl}
+                download={`monk-anthem-${Date.now()}.mp3`}
+                className="mt-3 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 transition"
+              >
+                ⬇️ Download Anthem
+              </a>
+            </div>
+          )}
         </div>
-
-        {/* Content */}
-        <Stats>
-          <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
-            {/* Inspirations */}
-            {!defaultLore && (
-              <div className="mb-4 text-center">
-                <CustomDiv
-                  text="Choose an Inspiration"
-                  className="text-center mb-3 mx-auto"
-                />
-                <div className="flex flex-wrap justify-center gap-2">
-                  {presetLores.map((idea) => (
-                    <button
-                      key={idea}
-                      onClick={() => setPrompt(idea)}
-                      className="px-3 py-2 bg-gray-800 rounded text-xs hover:bg-gray-700 transition"
-                    >
-                      {idea}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Lore Prompt */}
-            <label className="block text-sm text-amber-200 text-left">
-              Lore Prompt
-            </label>
-            <textarea
-              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
-              rows={4}
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Describe your monk's legend or story..."
-            />
-
-            {/* Optional Lyrics */}
-            <label className="block text-sm text-amber-200 text-left">
-              Optional Lyrics
-            </label>
-            <textarea
-              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
-              rows={2}
-              value={lyrics}
-              onChange={(e) => setLyrics(e.target.value)}
-              placeholder="Add lyrics if you'd like..."
-            />
-
-            {/* Music Style */}
-            <label className="block text-sm text-amber-200 text-left">
-              Music Style
-            </label>
-            <select
-              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
-              value={style}
-              onChange={(e) => setStyle(e.target.value)}
-            >
-              {styles.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-
-            {/* Generate Button */}
-            <button
-              onClick={generateSong}
-              disabled={loading || !prompt}
-              className="mt-4 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded transition disabled:opacity-50"
-            >
-              {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
-            </button>
-
-            {/* Error */}
-            {error && <p className="text-red-400 mt-3">{error}</p>}
-
-            {/* Preview */}
-            {audioUrl && (
-              <div className="mt-6 text-center">
-                <CustomDiv text="Preview" className="mx-auto mb-3" />
-                <audio controls src={audioUrl} className="w-full rounded-lg" />
-                <a
-                  href={audioUrl}
-                  download={`monk-anthem-${Date.now()}.mp3`}
-                  className="mt-3 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 transition"
-                >
-                  ⬇️ Download Anthem
-                </a>
-              </div>
-            )}
-          </div>
-        </Stats>
-      </div>
+      </Stats>
     </div>
   );
 };
 
+// ✅ Default export required for import to work
 export default StudioClient;
