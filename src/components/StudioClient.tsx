@@ -16,14 +16,6 @@ const styles = [
   'Vaporwave', 'Bossa Nova', 'Trance'
 ];
 
-// 🪶 Default quick inspiration presets
-const presetLores = [
-  'An ancient monk chanting in a futuristic temple',
-  'Cyberpunk monks meditating in a neon cityscape',
-  'A ritual of light and shadow deep in the forest',
-  'Celestial beings singing in a digital cathedral',
-  'Battle hymn of a wandering monk-warrior',
-];
 
 const StudioClient = () => {
   const searchParams = useSearchParams();
