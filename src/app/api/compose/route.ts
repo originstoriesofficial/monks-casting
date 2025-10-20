@@ -49,9 +49,10 @@ export async function POST(req: Request) {
         'Content-Disposition': 'inline; filename="generated.mp3"',
       },
     });
-  } catch (err: any) {
-    console.error('Error in /api/compose:', err);
-    return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Internal Server Error';
+    console.error('Error in /api/compose:', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
