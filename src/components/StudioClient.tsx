@@ -92,22 +92,6 @@ const StudioClient = () => {
         <Stats>
           <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
             {/* Inspiration Buttons */}
-            {!defaultLore && (
-              <div className="mb-4 text-center">
-                <CustomDiv text="Choose an Inspiration" className="text-center mb-3 mx-auto" />
-                <div className="flex flex-wrap justify-center gap-2">
-                  {presetLores.map((idea) => (
-                    <button
-                      key={idea}
-                      onClick={() => setPrompt(idea)}
-                      className="px-3 py-2 bg-gray-800 rounded text-xs hover:bg-gray-700 transition"
-                    >
-                      {idea}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {/* Lore Prompt Input */}
             <label className="block text-sm text-amber-200">Lore Prompt</label>
