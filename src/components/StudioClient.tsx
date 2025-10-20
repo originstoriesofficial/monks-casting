@@ -66,21 +66,6 @@ const StudioClient = () => {
   };
 
   return (
-    <div className="text-amber-100 min-h-screen p-6 font-secondary bg-black">
-      <div className="max-w-5xl mx-auto grid grid-cols-1 gap-6">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-amber-200 mb-4">
-            🎧 Create Your Own MØNK Anthem
-          </h1>
-          <p className="text-sm md:text-base text-amber-300/80">
-            Transform your lore into sound.
-          </p>
-          <p className="text-xs md:text-sm text-amber-400 mt-2">
-            Choose an inspiration or write your own lore prompt below.
-          </p>
-        </div>
-
         <Stats>
           <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
             {/* Inspiration Buttons */}
