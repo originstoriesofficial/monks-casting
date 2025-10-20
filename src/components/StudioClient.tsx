@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Stats from '@/components/Stats';
+import CustomDiv from '@/components/CustomDiv';
 
 const styles = [
   'Electronic', 'Hip-Hop', 'Trap', 'Lo-fi', 'Jazz', 'Ambient', 'Synthwave',
@@ -11,6 +13,14 @@ const styles = [
   'Reggaeton', 'Acoustic', 'Minimal', 'Experimental', 'Dream Pop', 'Gospel',
   'Neo Soul', 'Boom Bap', 'Future Bass', 'Trap Soul', 'Post-Rock', 'Shoegaze',
   'Vaporwave', 'Bossa Nova', 'Trance'
+];
+
+const presetLores = [
+  'An ancient monk chanting in a futuristic temple',
+  'Cyberpunk monks meditating in a neon cityscape',
+  'A ritual of light and shadow deep in the forest',
+  'Celestial beings singing in a digital cathedral',
+  'Battle hymn of a wandering monk-warrior',
 ];
 
 const StudioClient = () => {
@@ -36,9 +46,7 @@ const StudioClient = () => {
 
       const res = await fetch('/api/compose', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: fullPrompt,
           music_length_ms: 60000,
@@ -63,62 +71,93 @@ const StudioClient = () => {
   };
 
   return (
-    <div className="min-h-screen px-6 py-10 text-white bg-black">
-      <h1 className="text-3xl font-bold mb-6">🎶 Studio</h1>
-
-      <label className="block mb-2 text-sm font-medium">Lore Prompt</label>
-      <textarea
-        className="w-full p-3 mb-4 bg-gray-800 rounded text-sm"
-        rows={4}
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-      />
-
-      <label className="block mb-2 text-sm font-medium">Optional Lyrics</label>
-      <textarea
-        className="w-full p-3 mb-4 bg-gray-800 rounded text-sm"
-        rows={2}
-        value={lyrics}
-        onChange={(e) => setLyrics(e.target.value)}
-        placeholder="Add lyrics if you'd like..."
-      />
-
-      <label className="block mb-2 text-sm font-medium">Music Style</label>
-      <select
-        className="w-full p-3 mb-6 bg-gray-800 rounded text-sm"
-        value={style}
-        onChange={(e) => setStyle(e.target.value)}
-      >
-        {styles.map((s) => (
-          <option key={s} value={s}>
-            {s}
-          </option>
-        ))}
-      </select>
-
-      <button
-        onClick={generateSong}
-        disabled={loading}
-        className="px-6 py-3 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 disabled:opacity-50"
-      >
-        {loading ? 'Generating...' : 'Generate Song'}
-      </button>
-
-      {error && <p className="text-red-400 mt-4">{error}</p>}
-
-      {audioUrl && (
-        <div className="mt-6">
-          <h2 className="text-xl mb-2">Preview</h2>
-          <audio controls src={audioUrl} className="w-full" />
-          <a
-            href={audioUrl}
-            download={`monk-song-${Date.now()}.mp3`}
-            className="mt-2 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700"
-          >
-            ⬇️ Download Song
-          </a>
+    <div className="text-amber-100 min-h-screen p-6 font-secondary bg-black">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 gap-6">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-5xl font-bold text-amber-200 mb-4">
+            🎧 Create Your Own MØNK Anthem
+          </h1>
+          <p className="text-sm md:text-base text-amber-300/80">
+            Transform your lore into sound — powered by ElevenLabs.
+          </p>
         </div>
-      )}
+
+        <Stats>
+          <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
+            {!defaultLore && (
+              <div className="mb-4">
+                <CustomDiv text="Choose an Inspiration" className="text-center mb-3" />
+                <div className="flex flex-wrap justify-center gap-2">
+                  {presetLores.map((idea) => (
+                    <button
+                      key={idea}
+                      onClick={() => setPrompt(idea)}
+                      className="px-3 py-2 bg-gray-800 rounded text-xs hover:bg-gray-700 transition"
+                    >
+                      {idea}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <label className="block text-sm text-amber-200">Lore Prompt</label>
+            <textarea
+              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
+              rows={4}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Describe your monk's legend or story..."
+            />
+
+            <label className="block text-sm text-amber-200">Optional Lyrics</label>
+            <textarea
+              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
+              rows={2}
+              value={lyrics}
+              onChange={(e) => setLyrics(e.target.value)}
+              placeholder="Add lyrics if you'd like..."
+            />
+
+            <label className="block text-sm text-amber-200">Music Style</label>
+            <select
+              className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
+              value={style}
+              onChange={(e) => setStyle(e.target.value)}
+            >
+              {styles.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+
+            <button
+              onClick={generateSong}
+              disabled={loading || !prompt}
+              className="mt-4 w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded transition disabled:opacity-50"
+            >
+              {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
+            </button>
+
+            {error && <p className="text-red-400 mt-3">{error}</p>}
+
+            {audioUrl && (
+              <div className="mt-6 text-center">
+                <CustomDiv text="Preview" className="mx-auto mb-3" />
+                <audio controls src={audioUrl} className="w-full rounded-lg" />
+                <a
+                  href={audioUrl}
+                  download={`monk-anthem-${Date.now()}.mp3`}
+                  className="mt-3 inline-block px-4 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 transition"
+                >
+                  ⬇️ Download Anthem
+                </a>
+              </div>
+            )}
+          </div>
+        </Stats>
+      </div>
     </div>
   );
 };
