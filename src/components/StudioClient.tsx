@@ -16,6 +16,14 @@ const styles = [
   'Vaporwave', 'Bossa Nova', 'Trance'
 ];
 
+// ✨ Optional preset ideas
+const presetLores = [
+  'An ancient monk chanting in a futuristic temple',
+  'Cyberpunk monks meditating in a neon cityscape',
+  'A ritual of light and shadow deep in the forest',
+  'Celestial beings singing in a digital cathedral',
+  'Battle hymn of a wandering monk-warrior',
+];
 
 const StudioClient = () => {
   const searchParams = useSearchParams();
@@ -50,28 +58,61 @@ const StudioClient = () => {
 
       if (!res.ok) throw new Error('Failed to generate song');
 
+      // Optional delay for UX
+      await new Promise((r) => setTimeout(r, 1500));
+
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       setAudioUrl(url);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error('Error generating music:', err.message);
-        setError('Something went wrong while generating music.');
-      } else {
-        setError('Unknown error occurred.');
-      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unknown error';
+      console.error('Error generating music:', msg);
+      setError('Something went wrong while generating music.');
     } finally {
       setLoading(false);
     }
   };
 
+  // ✅ Clean JSX structure (no stray tags)
   return (
+    <div className="text-amber-100 min-h-screen p-6 font-secondary bg-black">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 gap-6 text-center">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-5xl font-bold text-amber-200 mb-4">
+            🎧 Create Your Own MØNK Anthem
+          </h1>
+          <p className="text-sm md:text-base text-amber-300/80">
+            Transform your lore into sound.
+          </p>
+          <p className="text-xs md:text-sm text-amber-400 mt-2">
+            Choose an inspiration or write your own lore prompt below.
+          </p>
+        </div>
+
+        {/* Content */}
         <Stats>
           <div className="p-4 md:p-6 flex flex-col gap-4 text-amber-100">
-            {/* Inspiration Buttons */}
+            {/* Inspirations */}
+            {!defaultLore && (
+              <div className="mb-4 text-center">
+                <CustomDiv text="Choose an Inspiration" className="text-center mb-3 mx-auto" />
+                <div className="flex flex-wrap justify-center gap-2">
+                  {presetLores.map((idea) => (
+                    <button
+                      key={idea}
+                      onClick={() => setPrompt(idea)}
+                      className="px-3 py-2 bg-gray-800 rounded text-xs hover:bg-gray-700 transition"
+                    >
+                      {idea}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            {/* Lore Prompt Input */}
-            <label className="block text-sm text-amber-200">Lore Prompt</label>
+            {/* Lore Prompt */}
+            <label className="block text-sm text-amber-200 text-left">Lore Prompt</label>
             <textarea
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
               rows={4}
@@ -80,8 +121,8 @@ const StudioClient = () => {
               placeholder="Describe your monk's legend or story..."
             />
 
-            {/* Lyrics Input */}
-            <label className="block text-sm text-amber-200">Optional Lyrics</label>
+            {/* Optional Lyrics */}
+            <label className="block text-sm text-amber-200 text-left">Optional Lyrics</label>
             <textarea
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm focus:ring-amber-400 focus:outline-none"
               rows={2}
@@ -90,8 +131,8 @@ const StudioClient = () => {
               placeholder="Add lyrics if you'd like..."
             />
 
-            {/* Music Style Selector */}
-            <label className="block text-sm text-amber-200">Music Style</label>
+            {/* Music Style */}
+            <label className="block text-sm text-amber-200 text-left">Music Style</label>
             <select
               className="w-full p-3 bg-gray-900 text-amber-100 rounded text-sm"
               value={style}
@@ -113,10 +154,10 @@ const StudioClient = () => {
               {loading ? 'Generating Anthem...' : 'Generate My MØNK Anthem'}
             </button>
 
-            {/* Error Message */}
+            {/* Error */}
             {error && <p className="text-red-400 mt-3">{error}</p>}
 
-            {/* Audio Player */}
+            {/* Preview */}
             {audioUrl && (
               <div className="mt-6 text-center">
                 <CustomDiv text="Preview" className="mx-auto mb-3" />
