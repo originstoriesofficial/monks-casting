@@ -3,8 +3,8 @@ import React from "react";
 const drops = [
   { title: "Mønks", mediaUrl: "/media/drop1.jpg", minted: 342 },
   { title: "Original Monk", mediaUrl: "/media/drop2.mp4", minted: 239 },
-  { title: "Friend of Monk", mediaUrl: "/media/drop3.jpg", minted: 45 },
-  { title: "La Lotería de MØNKS 001", mediaUrl: "/media/drop4.mp4", minted: 1001 },
+  { title: "Friend of Monk", mediaUrl: "/media/drop3.mp4", minted: 45 },
+  { title: "La Lotería de MØNKS 001", mediaUrl: "/media/drop4.jpg", minted: 1001 },
   { title: "La Lotería de MØNKS 002", mediaUrl: "/media/drop5.jpg", minted: 901 },
   { title: "La Lotería de MØNKS 003", mediaUrl: "/media/drop6.jpg", minted: 900 },
   { title: "La Monjería", mediaUrl: null, comingSoon: true },
