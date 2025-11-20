@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { fal } from '@fal-ai/client';
 
 fal.config({
-  credentials: process.env.FAL_KEY,
+  credentials: process.env.FAL_AI_API_KEY,
 });
 
 export async function POST(req: NextRequest) {
